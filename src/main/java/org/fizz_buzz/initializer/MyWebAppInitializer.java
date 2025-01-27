@@ -1,6 +1,6 @@
 package org.fizz_buzz.initializer;
 
-import jakarta.servlet.Filter;
+import org.fizz_buzz.config.DataLayerConfig;
 import org.fizz_buzz.config.RootConfig;
 import org.fizz_buzz.config.ServletConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -8,7 +8,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{ RootConfig.class };
+        return new Class[]{ RootConfig.class, DataLayerConfig.class };
     }
 
     @Override
