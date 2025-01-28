@@ -14,6 +14,7 @@ import org.fizz_buzz.test.TestPrototypeBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import javax.sql.DataSource;
@@ -69,5 +70,9 @@ public class SpringApplicationRunner {
         userRepository.save(user);
         var users = userRepository.findAll();
         System.out.println(users);
+
+
+        LocalContainerEntityManagerFactoryBean fm = applicationContext.getBean(LocalContainerEntityManagerFactoryBean.class);
+        System.out.println(fm.getJpaDialect().toString());
     }
 }

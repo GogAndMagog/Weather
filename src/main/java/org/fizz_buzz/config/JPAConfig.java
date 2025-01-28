@@ -12,6 +12,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "org.fizz_buzz.repository")
@@ -26,10 +27,15 @@ public class JPAConfig {
         vendorAdapter.setGenerateDdl(false);
         vendorAdapter.setShowSql(true);
 
+
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan(MODEL_PACKAGE);
         factory.setDataSource(dataSource);
+        factory.setJpaProperties(properties);
 
         return factory;
     }
