@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - objectQuotingStrategy: QUOTE_ALL_OBJECTS
+  - include:
+      relativeToChangelogFile: true
+      file: changeset\V1.0\create-users-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: changeset\V1.0\create-sessions-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: changeset\V1.0\create-locations-table.yaml
+#        - createTable:
+#            schemaName: Main
+#            tableName: Users
+#            columns:
+#              - column:
+#                  name: ID
+#                  type: serial
+#                  autoIncrement: true
+#                  constraints:
+#                    primaryKey: true
+#                    nullable: false
+#              - column:
+#                  name: Login
+#                  type: text
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: Password
+#                  type: text
+#                  constraints:
+#                    nullable: false
+#      logicalFilePath: db/sql/create-users-table.sql
+#  - include:
+#      file: db/changelog/changeset/create-users-table.yaml
+#      relativeToChangelogFile: true

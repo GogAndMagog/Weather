@@ -20,4 +20,7 @@ public class User {
 
     @Column(name = "`Login`")
     private String login;
+
+    @Column(name = "`Password`")
+    private String password;
 }

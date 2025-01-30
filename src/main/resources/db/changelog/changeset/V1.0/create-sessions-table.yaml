@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-sessions
+      author: fizz_buzz
+      changes:
+        - sqlFile:
+            path: SQL\3-create-sessions-table.sql
+            endDelimiter: \nGO
+            relativeToChangelogFile: true
+            encoding: 'UTF8'
+            splitStatements: true
+            stripComments: true
+      rollback:
+        - sqlFile:
+            path: SQL\4-drop-sessions-table.sql
+            endDelimiter: \nGO
+            relativeToChangelogFile: true
+            encoding: 'UTF8'
+            splitStatements: true
+            stripComments: true

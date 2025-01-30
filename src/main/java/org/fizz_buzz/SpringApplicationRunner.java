@@ -4,6 +4,7 @@ package org.fizz_buzz;
 import org.fizz_buzz.config.ComponentScanConfig;
 import org.fizz_buzz.config.DataLayerConfig;
 import org.fizz_buzz.config.DataSourceConfig;
+import org.fizz_buzz.config.LiquibaseConfig;
 import org.fizz_buzz.config.RootConfig;
 import org.fizz_buzz.config.ServletConfig;
 import org.fizz_buzz.controller.TestController;
@@ -31,7 +32,8 @@ public class SpringApplicationRunner {
 //                ServletConfig.class
 //                ComponentScanConfig.class
                 DataLayerConfig.class,
-                RootConfig.class
+                RootConfig.class,
+                LiquibaseConfig.class
         ); // ClassPathXmlApplicationContext("WEB-INF/applicationContext.xml");
 
         TestBean bean = (TestBean) applicationContext.getBean("testBean");
@@ -65,11 +67,12 @@ public class SpringApplicationRunner {
         UserRepository userRepository = applicationContext.getBean(UserRepository.class);
 //        userRepository.deleteAll();
         var user = new User();
-        user.setLogin("Java3");
-//        user.setId(66);
+        user.setLogin("JPA Test Login2");
+        user.setPassword("JPA Test Password");
         userRepository.save(user);
         var users = userRepository.findAll();
         System.out.println(users);
+
 
 
         LocalContainerEntityManagerFactoryBean fm = applicationContext.getBean(LocalContainerEntityManagerFactoryBean.class);
