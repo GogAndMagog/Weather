@@ -42,7 +42,9 @@ class LocationRepositoryTest {
     void save_CorrectData_NoExceptions() {
         var location = new Location();
         location.setName("Ust` Perd`uisk");
-        location.setUserId(userRepository.findByLogin(userName));
+        userRepository
+                .findByLogin(userName)
+                .ifPresent(location::setUserId);
         location.setLatitude(12);
         location.setLongitude(21);
 

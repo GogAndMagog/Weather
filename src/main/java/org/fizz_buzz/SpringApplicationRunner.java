@@ -1,30 +1,27 @@
 package org.fizz_buzz;
 
 
-import org.fizz_buzz.config.ComponentScanConfig;
 import org.fizz_buzz.config.DataLayerConfig;
-import org.fizz_buzz.config.DataSourceConfig;
 import org.fizz_buzz.config.LiquibaseConfig;
 import org.fizz_buzz.config.RootConfig;
-import org.fizz_buzz.config.ServletConfig;
-import org.fizz_buzz.controller.TestController;
+import org.fizz_buzz.config.ServiceConfig;
 import org.fizz_buzz.model.User;
 import org.fizz_buzz.repository.UserRepository;
 import org.fizz_buzz.test.TestBean;
 import org.fizz_buzz.test.TestPrototypeBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class SpringApplicationRunner {
+
+    private static final String testUser = "Ivan";
+    private static final String testPassword = "pass";
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(
@@ -33,7 +30,8 @@ public class SpringApplicationRunner {
 //                ComponentScanConfig.class
                 DataLayerConfig.class,
                 RootConfig.class,
-                LiquibaseConfig.class
+                LiquibaseConfig.class,
+                ServiceConfig.class
         ); // ClassPathXmlApplicationContext("WEB-INF/applicationContext.xml");
 
         TestBean bean = (TestBean) applicationContext.getBean("testBean");
@@ -67,12 +65,11 @@ public class SpringApplicationRunner {
         UserRepository userRepository = applicationContext.getBean(UserRepository.class);
 //        userRepository.deleteAll();
         var user = new User();
-        user.setLogin("JPA Test Login2");
-        user.setPassword("JPA Test Password");
-        userRepository.save(user);
-        var users = userRepository.findAll();
-        System.out.println(users);
-
+//        user.setLogin("JPA Test Login2");
+//        user.setPassword("JPA Test Password");
+//        userRepository.save(user);
+//        var users = userRepository.findAll();
+//        System.out.println(users);
 
 
         LocalContainerEntityManagerFactoryBean fm = applicationContext.getBean(LocalContainerEntityManagerFactoryBean.class);
