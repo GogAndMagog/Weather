@@ -5,20 +5,22 @@ import org.fizz_buzz.model.Location;
 import org.fizz_buzz.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class LocationRepositoryTest {
 
-    private static final String userName = "user";
-    private static final String userPass = "pass";
+    private static final String LOGIN = "user";
+    private static final String PASS = "pass";
+
+    private static final String LOCATION_NAME_TEXAS = "Texas";
+    private static final String LOCATION_NAME_CLOUDS = "Clouds";
 
     private LocationRepository locationRepository;
     private UserRepository userRepository;
@@ -26,46 +28,68 @@ class LocationRepositoryTest {
 
     @BeforeEach
     void setUp() {
+
         ApplicationContext context = new AnnotationConfigApplicationContext(JPATestConfig.class);
 
         locationRepository = context.getBean(LocationRepository.class);
         userRepository = context.getBean(UserRepository.class);
-
-        var testUser = new User();
-        testUser.setLogin(userName);
-        testUser.setPassword(userPass);
-
-        userRepository.save(testUser);
     }
 
     @Test
     void save_CorrectData_NoExceptions() {
-        var location = new Location();
-        location.setName("Ust` Perd`uisk");
-        userRepository
-                .findByLogin(userName)
-                .ifPresent(location::setUserId);
-        location.setLatitude(12);
-        location.setLongitude(21);
 
-        var savedLocation = locationRepository.save(location);
-        assertNotNull(savedLocation);
+        var user = userRepository.save(createTestUser());
+
+        var location = createTestLocation(user, LOCATION_NAME_TEXAS, 112.12, 11.23);
+
+        assertNotEquals(0, locationRepository.save(location).getId());
     }
 
     @Test
     void save_IncorrectUser_Exceptions() {
-        var location = new Location();
-        var user = new User();
 
+        var user = createTestUser();
         user.setId(2);
-        user.setLogin(userName + '2');
-        user.setPassword(userPass);
 
-        location.setName("Ust` Perd`uisk");
-        location.setUserId(user);
-        location.setLatitude(12);
-        location.setLongitude(21);
+        var location = createTestLocation(user, LOCATION_NAME_TEXAS, 12, 14);
 
         assertThrows(Exception.class, () -> locationRepository.save(location));
+    }
+
+    @Test
+    void findByUser_CorrectData_NoException() {
+        var user = userRepository.save(createTestUser());
+
+        var location = createTestLocation(user, LOCATION_NAME_TEXAS, 112.12, 11.23);
+        locationRepository.save(location);
+
+        location = createTestLocation(user, LOCATION_NAME_CLOUDS, 331, 12231.23);
+        locationRepository.save(location);
+
+
+        assertEquals(2, locationRepository.findByUser(user).size());
+    }
+
+    private User createTestUser(){
+
+        var testUser = new User();
+        testUser.setLogin(LOGIN);
+        testUser.setPassword(PASS);
+
+        return testUser;
+    }
+
+    private Location createTestLocation(User user,
+                                        String name,
+                                        double latitude,
+                                        double longitude ){
+
+        var testLocation = new Location();
+        testLocation.setUser(user);
+        testLocation.setName(name);
+        testLocation.setLatitude(latitude);
+        testLocation.setLongitude(longitude);
+
+        return testLocation;
     }
 }
