@@ -26,7 +26,7 @@ public class AuthenticationAndAuthorizationService {
         this.sessionDurationTime = sessionDurationTime;
     }
 
-    public UUID createSession(String login, String password) {
+    public UUID authenticate(String login, String password) {
         return userRepository
                 .findByLogin(login)
                 .filter(user -> user.getPassword().equals(password))

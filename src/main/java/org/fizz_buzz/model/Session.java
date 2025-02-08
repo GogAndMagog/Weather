@@ -9,12 +9,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Data
 @Entity
+@RequiredArgsConstructor
+@NoArgsConstructor
 @Table(name = "`Sessions`", schema = "`Main`")
 public class Session {
 
@@ -25,8 +30,10 @@ public class Session {
 
     @JoinColumn(name = "`UserId`", nullable = false)
     @ManyToOne(optional = false)
+    @NonNull
     private User user;
 
     @Column(name = "`ExpiresAt`", nullable = false)
+    @NonNull
     private Date expiresAt;
 }

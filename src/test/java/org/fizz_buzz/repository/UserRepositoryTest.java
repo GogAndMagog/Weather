@@ -3,13 +3,14 @@ package org.fizz_buzz.repository;
 import org.fizz_buzz.config.JPATestConfig;
 import org.fizz_buzz.model.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@Tag("Integration")
 class UserRepositoryTest {
 
     private static final String username = "user";
@@ -50,16 +51,6 @@ class UserRepositoryTest {
         testUser.setPassword(newPassword);
 
         assertDoesNotThrow(() -> userRepository.save(testUser));
-    }
-
-    @Test
-    void update_NullPassword_Exception() {
-        var testUser = createTestUser();
-
-        userRepository.save(testUser);
-        testUser.setPassword(null);
-
-        assertThrows(Exception.class, () -> userRepository.save(testUser));
     }
 
     @Test

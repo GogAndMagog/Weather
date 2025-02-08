@@ -5,6 +5,7 @@ import org.fizz_buzz.model.User;
 import org.fizz_buzz.repository.SessionRepository;
 import org.fizz_buzz.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ import static org.mockito.Mockito.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("Unit")
 class RegistrationServiceTest {
 
     private static final String LOGIN = "user";

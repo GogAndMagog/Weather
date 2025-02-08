@@ -4,6 +4,7 @@ import org.fizz_buzz.config.JPATestConfig;
 import org.fizz_buzz.model.Location;
 import org.fizz_buzz.model.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
+@Tag("Integration")
 class LocationRepositoryTest {
 
     private static final String LOGIN = "user";

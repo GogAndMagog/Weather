@@ -25,9 +25,7 @@ public class RegistrationService {
     }
 
     public UUID registerUser(String login, String password){
-        var user = new User();
-        user.setLogin(login);
-        user.setPassword(password);
+        var user = new User(login, password);
         userRepository.save(user);
 
         var session = new Session();

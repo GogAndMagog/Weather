@@ -6,6 +6,7 @@ import org.fizz_buzz.model.User;
 import org.fizz_buzz.repository.SessionRepository;
 import org.fizz_buzz.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
+@Tag("Unit")
 class AuthenticationServiceTest {
 
     private static final String USERNAME = "user";
@@ -76,12 +78,12 @@ class AuthenticationServiceTest {
 
         when(sessionRepository.save(any(Session.class))).thenReturn(testSession);
 
-        assertNotNull(authenticationAndAuthorizationService.createSession(USERNAME, PASSWORD));
+        assertNotNull(authenticationAndAuthorizationService.authenticate(USERNAME, PASSWORD));
     }
 
     @Test
     void createSession_UserNotExist_Exception() {
-        assertThrows(IncorrectPassword.class, () -> authenticationAndAuthorizationService.createSession(USERNAME, PASSWORD));
+        assertThrows(IncorrectPassword.class, () -> authenticationAndAuthorizationService.authenticate(USERNAME, PASSWORD));
     }
 
     private User createTestUser() {

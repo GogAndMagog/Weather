@@ -4,6 +4,7 @@ import org.fizz_buzz.config.JPATestConfig;
 import org.fizz_buzz.model.Session;
 import org.fizz_buzz.model.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -12,6 +13,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("Integration")
 class SessionRepositoryTest {
 
     private static final String username = "user";
@@ -64,9 +66,7 @@ class SessionRepositoryTest {
     }
 
     private User createTestUser() {
-        var user = new User();
-        user.setLogin(username);
-        user.setPassword(password);
+        var user = new User(username, password);
 
         return user;
     }
