@@ -38,7 +38,7 @@ class RegistrationServiceTest {
         userRepository = mock(UserRepository.class);
         sessionRepository  = mock(SessionRepository.class);
 
-        registrationService = new RegistrationService(userRepository, sessionRepository, SESSION_DURATION_TIME);
+        registrationService = new RegistrationService(userRepository, sessionRepository);
 
         testUser = createTestUser();
         testSession = createTestSession(testUser);

@@ -1,6 +1,6 @@
 package org.fizz_buzz.repository;
 
-import org.fizz_buzz.config.JPATestConfig;
+import org.fizz_buzz.config.DataLayerTestConfig;
 import org.fizz_buzz.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -22,7 +22,7 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        ApplicationContext context = new AnnotationConfigApplicationContext(JPATestConfig.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(DataLayerTestConfig.class);
 
         userRepository = context.getBean(UserRepository.class);
     }

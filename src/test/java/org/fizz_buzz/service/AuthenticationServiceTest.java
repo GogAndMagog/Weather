@@ -42,7 +42,7 @@ class AuthenticationServiceTest {
         userRepository = mock(UserRepository.class);
 
         authenticationAndAuthorizationService =
-                new AuthenticationAndAuthorizationService(userRepository, sessionRepository, SESSION_DURATION_TIME);
+                new AuthenticationAndAuthorizationService(userRepository, sessionRepository);
     }
 
     @Test

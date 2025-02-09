@@ -3,6 +3,7 @@ package org.fizz_buzz.config;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -15,7 +16,8 @@ import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "org.fizz_buzz.repository")
-public class JPATestConfig {
+@Profile("Test")
+public class DataLayerTestConfig {
 
     @Bean
     public DataSource dataSource() {

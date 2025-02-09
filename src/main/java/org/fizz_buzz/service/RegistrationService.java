@@ -4,24 +4,27 @@ import org.fizz_buzz.model.Session;
 import org.fizz_buzz.model.User;
 import org.fizz_buzz.repository.SessionRepository;
 import org.fizz_buzz.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Service
+@PropertySource("classpath:application.properties")
 public class RegistrationService {
 
     private UserRepository userRepository;
     private SessionRepository sessionRepository;
+
+    @Value("${sessionDurationTime}")
     private long sessionDurationTime;
 
     public RegistrationService(UserRepository userRepository,
-                               SessionRepository sessionRepository,
-                               long sessionDurationTime){
+                               SessionRepository sessionRepository){
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
-        this.sessionDurationTime = sessionDurationTime;
     }
 
     public UUID registerUser(String login, String password){
