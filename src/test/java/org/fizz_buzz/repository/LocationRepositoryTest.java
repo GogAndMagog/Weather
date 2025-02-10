@@ -51,7 +51,7 @@ class LocationRepositoryTest {
     void save_IncorrectUser_Exceptions() {
 
         var user = createTestUser();
-        user.setId(2);
+        user.setId(2L);
 
         var location = createTestLocation(user, LOCATION_NAME_TEXAS, 12, 14);
 

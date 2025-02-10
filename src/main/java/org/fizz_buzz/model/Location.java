@@ -9,27 +9,36 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "`Locations`", schema = "`Main`")
 public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "`ID`")
-    private long id;
+    @Column(name = "`ID`", nullable = false, unique = true)
+    private Long id;
 
     @Column(name = "`Name`")
+    @NonNull
     private String name;
 
     @JoinColumn(name = "`UserId`")
     @ManyToOne(optional = false)
+    @NonNull
     private User user;
 
     @Column(name = "`Latitude`")
-    private double latitude;
+    @NonNull
+    private Double latitude;
 
     @Column(name = "`Longitude`")
-    private double longitude;
+    @NonNull
+    private Double longitude;
 }

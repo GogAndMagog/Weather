@@ -25,15 +25,15 @@ public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "`ID`")
+    @Column(name = "`ID`", unique = true, nullable = false)
     private UUID id;
 
-    @JoinColumn(name = "`UserId`", nullable = false)
+    @JoinColumn(name = "`UserId`")
     @ManyToOne(optional = false)
     @NonNull
     private User user;
 
-    @Column(name = "`ExpiresAt`", nullable = false)
+    @Column(name = "`ExpiresAt`")
     @NonNull
     private Date expiresAt;
 }
