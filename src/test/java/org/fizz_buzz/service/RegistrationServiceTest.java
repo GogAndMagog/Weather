@@ -1,5 +1,6 @@
 package org.fizz_buzz.service;
 
+import org.fizz_buzz.common.CustomTestTag;
 import org.fizz_buzz.model.Session;
 import org.fizz_buzz.model.User;
 import org.fizz_buzz.repository.SessionRepository;
@@ -15,7 +16,7 @@ import static org.mockito.Mockito.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("Unit")
+@Tag(CustomTestTag.UNIT)
 class RegistrationServiceTest {
 
     private static final String LOGIN = "user";
@@ -31,6 +32,7 @@ class RegistrationServiceTest {
 
     private User testUser;
     private Session testSession;
+
 
     @BeforeEach
     void setUp() {

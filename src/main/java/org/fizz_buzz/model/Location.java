@@ -31,7 +31,6 @@ public class Location {
 
     @JoinColumn(name = "`UserId`")
     @ManyToOne(optional = false)
-    @NonNull
     private User user;
 
     @Column(name = "`Latitude`")

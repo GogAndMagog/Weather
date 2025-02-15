@@ -1,5 +1,6 @@
 package org.fizz_buzz.repository;
 
+import org.fizz_buzz.common.CustomTestTag;
 import org.fizz_buzz.config.DataLayerTestConfig;
 import org.fizz_buzz.model.Location;
 import org.fizz_buzz.model.User;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-@Tag("Integration")
+@Tag(CustomTestTag.INTEGRATION)
 class LocationRepositoryTest {
 
     private static final String LOGIN = "user";

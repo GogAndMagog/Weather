@@ -1,5 +1,6 @@
 package org.fizz_buzz.repository;
 
+import org.fizz_buzz.common.CustomTestTag;
 import org.fizz_buzz.config.DataLayerTestConfig;
 import org.fizz_buzz.model.Session;
 import org.fizz_buzz.model.User;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("Integration")
+@Tag(CustomTestTag.INTEGRATION)
 class SessionRepositoryTest {
 
     private static final String username = "user";

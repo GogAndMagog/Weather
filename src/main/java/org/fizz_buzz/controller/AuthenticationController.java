@@ -2,7 +2,7 @@ package org.fizz_buzz.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.fizz_buzz.service.AuthenticationAndAuthorizationService;
+import org.fizz_buzz.service.AuthenticationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +16,10 @@ public class AuthenticationController {
 
     private final static String COOKIE_SESSION_ID = "SessionId";
 
-    private final AuthenticationAndAuthorizationService authenticationAndAuthorizationService;
+    private final AuthenticationService authenticationService;
 
-    public AuthenticationController(AuthenticationAndAuthorizationService authenticationAndAuthorizationService) {
-        this.authenticationAndAuthorizationService = authenticationAndAuthorizationService;
+    public AuthenticationController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping("/authenticate")
@@ -31,7 +31,7 @@ public class AuthenticationController {
     public void authenticate(@RequestParam("login") String login,
                              @RequestParam("password") String password,
                              HttpServletResponse response) throws IOException {
-        var sessionId = authenticationAndAuthorizationService.authenticate(login, password);
+        var sessionId = authenticationService.createSession(login, password);
         response.addCookie(new Cookie(COOKIE_SESSION_ID, sessionId.toString()));
         response.sendRedirect("dummy") ;
     }

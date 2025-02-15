@@ -1,9 +1,12 @@
 package org.fizz_buzz.config;
 
+import org.fizz_buzz.repository.LocationRepository;
 import org.fizz_buzz.repository.SessionRepository;
 import org.fizz_buzz.repository.UserRepository;
-import org.fizz_buzz.service.AuthenticationAndAuthorizationService;
+import org.fizz_buzz.service.AuthenticationService;
 import org.fizz_buzz.service.RegistrationService;
+import org.fizz_buzz.service.SessionService;
+import org.fizz_buzz.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,9 +22,11 @@ public class ServiceConfig {
     private long sessionDurationTime;
 
     @Bean
-    public AuthenticationAndAuthorizationService authenticationAndAuthorizationService(SessionRepository sessionRepository,
-                                                                                       UserRepository userRepository) {
-        return new AuthenticationAndAuthorizationService(userRepository, sessionRepository);
+    public AuthenticationService authenticationAndAuthorizationService(SessionRepository sessionRepository,
+                                                                       UserRepository userRepository,
+                                                                       UserService userService,
+                                                                       SessionService sessionService) {
+        return new AuthenticationService(userRepository, sessionRepository, userService, sessionService);
     }
 
     @Bean
@@ -29,4 +34,15 @@ public class ServiceConfig {
                                                    SessionRepository sessionRepository) {
         return new RegistrationService(userRepository, sessionRepository);
     }
+
+    @Bean
+    public UserService userService(LocationRepository locationRepository, UserRepository userRepository) {
+        return new UserService(userRepository, locationRepository);
+    }
+
+    @Bean
+    public SessionService sessionService(SessionRepository sessionRepository) {
+        return new SessionService(sessionRepository);
+    }
+
 }

@@ -7,7 +7,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.fizz_buzz.service.AuthenticationAndAuthorizationService;
+import org.fizz_buzz.service.AuthenticationService;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.io.IOException;
@@ -24,13 +24,13 @@ public class AuthorizationFilter extends HttpFilter {
             "/register",
             "/authenticate"};
 
-    private AuthenticationAndAuthorizationService authenticationAndAuthorizationService;
+    private AuthenticationService authenticationService;
 
     @Override
     public void init(FilterConfig config) throws ServletException {
-        authenticationAndAuthorizationService = WebApplicationContextUtils
+        authenticationService = WebApplicationContextUtils
                 .getRequiredWebApplicationContext(config.getServletContext())
-                .getBean(AuthenticationAndAuthorizationService.class);
+                .getBean(AuthenticationService.class);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class AuthorizationFilter extends HttpFilter {
         if (session.isPresent()) {
             var sessionId = UUID.fromString(session.get().getValue());
 
-            if (authenticationAndAuthorizationService.isAuthorized(sessionId)) {
+            if (authenticationService.authenticate(sessionId)) {
                 chain.doFilter(req, res);
             } else {
                 res.sendRedirect("register");

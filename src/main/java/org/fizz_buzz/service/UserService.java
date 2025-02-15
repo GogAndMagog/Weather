@@ -1,13 +1,14 @@
 package org.fizz_buzz.service;
 
+import org.fizz_buzz.exception.WrongCredentialsException;
 import org.fizz_buzz.model.Location;
 import org.fizz_buzz.model.User;
 import org.fizz_buzz.repository.LocationRepository;
 import org.fizz_buzz.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final LocationRepository locationRepository;
 
+    @Autowired
     public UserService(UserRepository userRepository,
                        LocationRepository locationRepository) {
         this.userRepository = userRepository;
@@ -27,20 +29,34 @@ public class UserService {
         return userRepository.save(new User(username, password));
     }
 
-    public User getUser(String username) {
-        return userRepository.findByLogin(username).orElse(null);
+    public User getUser(String username, String password) {
+        return userRepository.findByLoginAndPassword(username, password)
+                .orElseThrow(WrongCredentialsException::new);
     }
 
     public List<Location> getUserLocations(String username) {
-        return userRepository.findByLogin(username).map(locationRepository::findByUser).orElse(List.of());
+        return locationRepository.findByUserLogin(username);
     }
 
-    public Location addLocation(User user, String locationName, Double latitude, Double longitude) {
-        return locationRepository.save(new Location(locationName, user, latitude, longitude));
+    @Transactional
+    public void addLocation(User user, String locationName, Double latitude, Double longitude) {
+
+        user.addLocation(new Location(locationName, latitude, longitude));
+        userRepository.save(user);
     }
 
-    public void deleteLocation(User user, String locationName, Double latitude, Double longitude) {
-        locationRepository.findByNameAndUserAndLongitudeAndLatitude(locationName, user, longitude, latitude)
-                .ifPresent(locationRepository::delete);
+    @Transactional
+    public void deleteLocation(User user, String locationName) {
+
+        user.removeLocation(locationName);
+        userRepository.save(user);
     }
+
+    @Transactional
+    public void deleteLocation(User user, Location location) {
+
+        user.removeLocation(location);
+        userRepository.save(user);
+    }
+
 }

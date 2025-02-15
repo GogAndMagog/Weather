@@ -4,7 +4,7 @@ import org.fizz_buzz.controller.AuthenticationController;
 import org.fizz_buzz.controller.MainPageController;
 import org.fizz_buzz.controller.RegistrationController;
 import org.fizz_buzz.controller.TestController;
-import org.fizz_buzz.service.AuthenticationAndAuthorizationService;
+import org.fizz_buzz.service.AuthenticationService;
 import org.fizz_buzz.service.RegistrationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,12 +26,12 @@ public class WebConfig {
 
     @Bean
     public RegistrationController registrationController(RegistrationService registrationService,
-                                                         AuthenticationAndAuthorizationService authenticationAndAuthorizationService) {
-        return new RegistrationController(registrationService, authenticationAndAuthorizationService);
+                                                         AuthenticationService authenticationService) {
+        return new RegistrationController(registrationService, authenticationService);
     }
 
     @Bean
-    public AuthenticationController authenticationController(AuthenticationAndAuthorizationService authenticationAndAuthorizationService){
-        return new AuthenticationController(authenticationAndAuthorizationService);
+    public AuthenticationController authenticationController(AuthenticationService authenticationService){
+        return new AuthenticationController(authenticationService);
     }
 }
