@@ -2,8 +2,10 @@ package org.fizz_buzz.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotBlank;
 import org.fizz_buzz.service.AuthenticationService;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,8 +30,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public void authenticate(@RequestParam("login") String login,
-                             @RequestParam("password") String password,
+    @Validated
+    public void authenticate(@RequestParam("login") @NotBlank(message = "Login must not be blank") String login,
+                             @RequestParam("password") @NotBlank(message = "Password must not be blank") String password,
                              HttpServletResponse response) throws IOException {
         var sessionId = authenticationService.createSession(login, password);
         response.addCookie(new Cookie(COOKIE_SESSION_ID, sessionId.toString()));

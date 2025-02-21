@@ -1,6 +1,7 @@
 package org.fizz_buzz.config;
 
 import org.fizz_buzz.controller.AuthenticationController;
+import org.fizz_buzz.controller.GlobalExceptionHandler;
 import org.fizz_buzz.controller.MainPageController;
 import org.fizz_buzz.controller.RegistrationController;
 import org.fizz_buzz.controller.TestController;
@@ -33,5 +34,10 @@ public class WebConfig {
     @Bean
     public AuthenticationController authenticationController(AuthenticationService authenticationService){
         return new AuthenticationController(authenticationService);
+    }
+
+    @Bean
+    public GlobalExceptionHandler globalExceptionHandler(){
+        return new GlobalExceptionHandler();
     }
 }

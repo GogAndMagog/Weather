@@ -3,9 +3,16 @@ package org.fizz_buzz.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.executable.ValidateOnExecution;
 import org.fizz_buzz.service.AuthenticationService;
 import org.fizz_buzz.service.RegistrationService;
+import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindException;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +45,7 @@ public class RegistrationController {
         return new ModelAndView("registration");
     }
 
-//    @GetMapping
+    //    @GetMapping
     public void checkRegister(HttpServletRequest request,
                               HttpServletResponse response) throws IOException {
         response.setContentType("text/plain");
@@ -49,13 +56,13 @@ public class RegistrationController {
             var sessionId = Arrays.stream(cookies)
                     .filter(cookie ->
                             cookie.getName().equals(COOKIE_SESSION_ID)
-                            && !cookie.getValue().isEmpty())
+                                    && !cookie.getValue().isEmpty())
                     .findAny()
                     .map(Cookie::getValue)
                     .map(UUID::fromString);
 
             if (sessionId.isPresent()) {
-                if (authenticationService.authenticate(sessionId.get())){
+                if (authenticationService.authenticate(sessionId.get())) {
                     response.setStatus(HttpServletResponse.SC_FOUND);
                     response.getWriter().write(USER_REGISTERED);
                 } else {
@@ -74,9 +81,11 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public void register(@RequestParam("login") String login,
-                         @RequestParam("password") String password,
-                         HttpServletResponse response) throws IOException {
+    @Validated
+    public void register(@RequestParam("login") @NotBlank(message = "Login must be not null") String login,
+                         @RequestParam("password") @NotBlank(message = "Password must be not null") String password,
+                         HttpServletResponse response) throws IOException, BindException {
+
         response.setContentType("text/plain");
 
         if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
