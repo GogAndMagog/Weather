@@ -15,13 +15,14 @@ import java.util.Arrays;
 import java.util.UUID;
 
 @WebFilter("/*")
-public class AuthorizationFilter extends HttpFilter {
+public class AuthenticationFilter extends HttpFilter {
 
     private final static String COOKIE_SESSION_ID = "SessionId";
 
-    private final String[] ALLOWED_URLS = {"/templates/registration.html",
-            "/templates/authentication.html",
+    private final String[] ALLOWED_URLS = {
             "/register",
+//            "/weather",
+//            "/test",
             "/authenticate"};
 
     private AuthenticationService authenticationService;

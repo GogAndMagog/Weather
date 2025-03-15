@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather</title>
+</head>
+<body>
+<div class="header">
+</div>
+<div class="Search">
+    <form action="weather" method="post">
+        <label>
+            Location:
+            <input name="locationName" type="text" value="test"
+                   th:value="${locationName != null ? locationName : 'Location' }"/>
+        </label>
+        <button>Search</button>
+        <label th:if="${locationNameError != null}" th:text="<br/>${locationNameError}"></label>
+    </form>
+</div>
+<div class="Cards">
+
+    <div class="Card" th:each="card : ${locationCards}">
+        <form action="locations" method="post">
+            <input type="hidden" name="name" th:value="${locationName}">
+            <input type="hidden" name="longitude" th:value="${card.longitude}">
+            <input type="hidden" name="latitude" th:value="${card.latitude}">
+            <button>Add</button>
+        </form>
+        <pre>
+Location:  [[${card.name}]]
+Latitude:  [[${card.latitude}]]
+Longitude: [[${card.longitude}]]
+Country:   [[${card.country}]]
+State:     [[${card.state}]]
+        </pre>
+    </div>
+</div>
+</body>
+</html>

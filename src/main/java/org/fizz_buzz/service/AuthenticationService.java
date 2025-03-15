@@ -1,5 +1,6 @@
 package org.fizz_buzz.service;
 
+import org.fizz_buzz.exception.ConfirmPasswordException;
 import org.fizz_buzz.exception.WrongCredentialsException;
 import org.fizz_buzz.repository.SessionRepository;
 import org.fizz_buzz.repository.UserRepository;
@@ -33,7 +34,11 @@ public class AuthenticationService {
         this.sessionService = sessionService;
     }
 
-    public UUID registerUser(String login, String password) {
+    public UUID registerUser(String login, String password, String confirmPassword) {
+
+        if (!password.equals(confirmPassword)) {
+            throw new ConfirmPasswordException();
+        }
 
         var user = userService.createUser(login, password);
 

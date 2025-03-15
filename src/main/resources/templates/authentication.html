@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login page</title>
@@ -7,13 +7,15 @@
 <body>
 <form action="authenticate" method="post">
     <label>
-        Login
-        <input name="login" type="text"/>
-    </label>
+        Login:
+        <input name="login" type="text" th:value="${credentials != null && credentials.login !=null ? credentials.login : ''}"/><br/>
+        <label th:if="${loginError != null}" th:text="${loginError}"></label>
+    </label><br/>
     <label>
-        Password
-        <input name="password" type="password">
-    </label>
+        Password:
+        <input name="password" type="password" th:value="${credentials != null && credentials.password != null ? credentials.password : ''}"><br/>
+        <label th:if="${passwordError != null}" th:text="${passwordError}"></label>
+    </label><br/>
     <button>Login</button>
 </form>
 </body>

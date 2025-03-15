@@ -7,11 +7,14 @@ import org.fizz_buzz.service.AuthenticationService;
 import org.fizz_buzz.service.RegistrationService;
 import org.fizz_buzz.service.SessionService;
 import org.fizz_buzz.service.UserService;
+import org.fizz_buzz.service.WeatherService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+
+import java.net.http.HttpClient;
 
 @Configuration
 @PropertySource("classpath:application.properties")
@@ -20,6 +23,11 @@ public class ServiceConfig {
 
     @Value("${sessionDurationTime}")
     private long sessionDurationTime;
+
+    @Bean
+    public HttpClient httpClient() {
+        return HttpClient.newHttpClient();
+    }
 
     @Bean
     public AuthenticationService authenticationAndAuthorizationService(SessionRepository sessionRepository,
@@ -43,6 +51,11 @@ public class ServiceConfig {
     @Bean
     public SessionService sessionService(SessionRepository sessionRepository) {
         return new SessionService(sessionRepository);
+    }
+
+    @Bean
+    public WeatherService weatherService(HttpClient httpClient) {
+        return new WeatherService(httpClient);
     }
 
 }

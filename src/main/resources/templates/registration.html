@@ -7,13 +7,20 @@
 <body>
 <form action="register" method="post">
     <label>
-        Login
-        <input name="login" type="text"/>
-    </label>
+        Login:
+        <input name="login" type="text" th:value="${credentials != null && credentials.login !=null ? credentials.login : ''}"/><br/>
+        <label th:if="${loginError != null}" th:text="${loginError}"></label>
+    </label><br/>
     <label>
-        Password
-        <input name="password" type="password">
-    </label>
+        Password:
+        <input name="password" type="password" th:value="${credentials != null && credentials.password != null ? credentials.password : ''}"><br/>
+        <label th:if="${passwordError != null}" th:text="${passwordError}"></label>
+    </label><br/>
+    <label>
+        Confirm password:
+        <input name="confirmPassword" type="password"><br/>
+        <label th:if="${confirmPassword != null}" th:text="${confirmPassword}"></label>
+    </label><br/>
     <button>Register</button>
 </form>
 </body>

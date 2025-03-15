@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor(force = true)
@@ -39,10 +40,10 @@ public class User {
     @NonNull
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "UserId")
     private List<Location> locations = new ArrayList<>();
-    ;
+
 
     public void addLocation(@NonNull Location location) {
         location.setUser(this);
@@ -59,5 +60,9 @@ public class User {
 
     public boolean removeLocation(@NonNull Location location) {
         return locations.remove(location);
+    }
+
+    public boolean removeLocation(@NonNull Long locationId) {
+        return locations.removeIf(location -> Objects.equals(location.getId(), locationId));
     }
 }

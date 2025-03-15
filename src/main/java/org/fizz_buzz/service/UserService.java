@@ -59,4 +59,11 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
+    public void deleteLocation(User user, Long locationId) {
+
+        user.removeLocation(locationId);
+        userRepository.save(user);
+    }
+
 }

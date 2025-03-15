@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather</title>
+
+</head>
+<body>
+<div class="header">
+</div>
+<div class="head">
+    <a href="/weather">Home</a>
+    <form action="logout" method="post">
+        <label for="logout">Govno</label>
+        <button id="logout" name="logoutButton" type="submit">Logout</button>
+    </form>
+</div>
+<div class="Search">
+    <form action="locations" method="get">
+        <label>
+            Location:
+            <input name="locationName" type="text" value="test"
+                   th:value="${filter != null ? filter.locationName : 'Location' }"/>
+        </label>
+        <button id="searchButton">Search</button>
+        <label th:if="${locationNameError != null}" th:text="<br/>${locationNameError}"></label>
+    </form>
+</div>
+<div class="Cards" id="form-container">
+
+    <div class="Card" th:each="card : ${weatherCards}">
+        <form>
+            <input type="hidden" id="locationId" name="locationId" th:value="${card.locationId}"/>
+            <button id="deleteButton" type="submit">✕</button>
+        </form>
+        <img th:src="@{'http://openweathermap.org/img/wn/' + ${card.weatherOpenWeatherDTO.icon} + '@4x.png'}" alt="" class="icon-img"><br/>
+        <pre>
+Location:    [[${card.locationName}]]
+Latitude:    [[${card.weatherOpenWeatherDTO.latitude}]]
+Longitude:   [[${card.weatherOpenWeatherDTO.longitude}]]
+Temperature: [[${card.weatherOpenWeatherDTO.temperature}]]
+Wind speed:  [[${card.weatherOpenWeatherDTO.windSpeed}]]
+Humidity:    [[${card.weatherOpenWeatherDTO.humidity}]]
+        </pre>
+    </div>
+</div>
+
+<script>
+    document.getElementById('form-container').addEventListener('submit', function(event) {
+
+        const url = 'http:locations'; // Укажите URL вашего API
+
+        event.preventDefault(); // Остановить отправку формы
+
+        const form = event.target; // Получаем форму, которая была отправлена
+        const formData = new FormData(form); // Сбор данных формы
+        // const params = {
+        //     locationId: formData.get('locationId')
+        // };
+        const data = new URLSearchParams();
+        data.append('locationId', formData.get('locationId'));
+        // Здесь можно отправить данные на сервер или выполнить другую логику
+        fetch(url, {
+            method: 'DELETE', // Указываем метод
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded' // Устанавливаем заголовки, если необходимо
+            },
+            // body: JSON.stringify(params) // Преобразуем параметры в JSON-строку для отправки
+            body: data // Преобразуем параметры в JSON-строку для отправки
+        });
+    });
+</script>
+</body>
+</html>
