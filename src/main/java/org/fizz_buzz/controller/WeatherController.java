@@ -1,6 +1,7 @@
 package org.fizz_buzz.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import org.fizz_buzz.dto.LocationOpenWeatherDTO;
@@ -11,6 +12,8 @@ import org.fizz_buzz.service.SessionService;
 import org.fizz_buzz.service.UserService;
 import org.fizz_buzz.service.WeatherService;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
@@ -44,8 +48,8 @@ public class WeatherController {
 
     @GetMapping("/weather")
     public String getWeather(Model model,
-                             HttpServletRequest request) {
-
+                             HttpServletRequest request,
+                             HttpServletResponse response) {
 
         Session session;
         try {
@@ -68,13 +72,18 @@ public class WeatherController {
         });
 
         model.addAttribute("weatherCards", weatherDTOs);
+
+        response.addHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+        response.addHeader("Expires", "Thu, 01 Jan 1970 00:00:00 GMT");
+        response.addHeader("Pragma", "no-cache");
+
         return "weather";
     }
 
     @GetMapping("/locations")
     public String findLocations(@ModelAttribute("locationName") @NotBlank(message = "Location name must not be blank")
 //                                    @Max(value = 30, message = "Location name should be maximum 30 symbols maximum")
-                                    String locationName,
+                                String locationName,
                                 Model model) throws IOException, InterruptedException {
 
         var locations = weatherService.getLocations(locationName);
@@ -103,20 +112,18 @@ public class WeatherController {
         return new RedirectView("weather");
     }
 
-//    @CrossOrigin
     @DeleteMapping("/locations")
-    public String deleteLocation(@RequestParam("locationId") Long locationId,
-                                 HttpServletRequest request){
+    public ResponseEntity<String> deleteLocation(@RequestParam("locationId") Long locationId,
+                                                 HttpServletRequest request) {
 
         Session session;
         try {
             session = sessionService.getSession(request);
+            userService.deleteLocation(session.getUser(), locationId);
         } catch (RuntimeException | NoSuchFieldException e) {
-            return "redirect:registration";
+            return new ResponseEntity<>(HttpStatus.NETWORK_AUTHENTICATION_REQUIRED);
         }
 
-        userService.deleteLocation(session.getUser(), locationId);
-
-        return "redirect:weather";
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
