@@ -1,27 +1,101 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<html lang="enEN ruRU" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" content="text/html">
     <title>Registration</title>
+    <link href="/static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<form action="register" method="post">
-    <label>
-        Login:
-        <input name="login" type="text" th:value="${credentials != null && credentials.login !=null ? credentials.login : ''}"/><br/>
-        <label th:if="${loginError != null}" th:text="${loginError}"></label>
-    </label><br/>
-    <label>
-        Password:
-        <input name="password" type="password" th:value="${credentials != null && credentials.password != null ? credentials.password : ''}"><br/>
-        <label th:if="${passwordError != null}" th:text="${passwordError}"></label>
-    </label><br/>
-    <label>
-        Confirm password:
-        <input name="confirmPassword" type="password"><br/>
-        <label th:if="${confirmPassword != null}" th:text="${confirmPassword}"></label>
-    </label><br/>
-    <button>Register</button>
-</form>
+
+<header th:insert="components/components.html :: header">
+</header>
+
+<main class="container p-5">
+    <div class="align-items-center" style="display: flex; justify-content: center">
+        <div class="text-start ">
+            <form action="register" method="post" th:object="${credentials}" accept-charset="UTF-8"
+                  enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <legend>Credentials:</legend>
+                    <div class="mb-3">
+                        <label for="login"
+                               class="form-label"
+                               th:for="${#ids.next('login')}">Login:</label>
+                        <input type="text"
+                               id="login"
+                               class="form-control"
+                               th:classappend="(${#fields.hasErrors('login')} ? 'is-invalid')
+                               + ' '
+                               + (${method != 'GET' and not #fields.hasErrors('login')} ? 'is-valid')"
+                               th:field="*{login}" placeholder="Enter your name..."/>
+                        <div th:if="${#fields.hasErrors('login')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('login')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                        <div th:if="${not #fields.hasErrors('login')}" class="valid-feedback">
+                            <ul>
+                                <li>all good</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password"
+                               class="form-label"
+                               th:for="${#ids.next('password')}">Password:</label>
+                        <input id="password"
+                               name="password"
+                               type="password"
+                               class="form-control"
+                               th:classappend="(${#fields.hasErrors('password')} ? 'is-invalid')
+                               + ' '
+                               + (${method != 'GET' and not #fields.hasErrors('password')} ? 'is-valid')"
+                               th:field="*{password}"/>
+                        <div class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('password')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                        <div th:if="${not #fields.hasErrors('password')}" class="valid-feedback">
+                            <ul>
+                                <li>all good</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword"
+                               class="form-label"
+                               th:for="${#ids.next('confirmPassword')}">Confirm password:</label>
+                        <input id="confirmPassword"
+                               name="confirmPassword"
+                               type="password"
+                               class="form-control"
+                               th:classappend="(${#fields.hasErrors('confirmPassword') or isPasswordMatches == true} ? 'is-invalid')
+                               + ' '
+                               + (${method != 'GET' and not #fields.hasErrors('confirmPassword') and not isPasswordMatches == true} ? 'is-valid')"
+                               th:field="*{confirmPassword}"/>
+                        <div class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('confirmPassword')}" th:text="${err}"/>
+                                <li th:each="err : ${#fields.detailedErrors()}"  th:if="${err.getFieldName() == 'passwordMatches'}" th:text="${err.getMessage()}"/>
+                            </ul>
+                        </div>
+                        <div th:if="${not #fields.hasErrors('confirmPassword') and not (isPasswordMatches == true)}" class="valid-feedback">
+                            <ul>
+                                <li>all good</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary">Register</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer class="fixed-bottom" th:insert="/components/components.html :: footer">
+</footer>
 </body>
 </html>

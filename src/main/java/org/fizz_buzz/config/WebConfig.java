@@ -6,20 +6,36 @@ import org.fizz_buzz.controller.MainPageController;
 import org.fizz_buzz.controller.RegistrationController;
 import org.fizz_buzz.controller.TestController;
 import org.fizz_buzz.controller.WeatherController;
+import org.fizz_buzz.interceptor.UserLoginInterceptor;
+import org.fizz_buzz.model.Session;
 import org.fizz_buzz.service.AuthenticationService;
 import org.fizz_buzz.service.SessionService;
 import org.fizz_buzz.service.UserService;
 import org.fizz_buzz.service.WeatherService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
-public class WebConfig {
+@ComponentScan(
+        basePackages = {"org.fizz_buzz.filter"},
+        basePackageClasses = {DataLayerConfig.class,
+                DataLayerTestConfig.class,
+                DataSourceConfig.class,
+                JPAConfig.class,
+                LiquibaseConfig.class,
+                ServiceConfig.class,
+                ThymeleafConfig.class
+        })
+public class WebConfig implements WebMvcConfigurer {
 
     @Bean
-    public MainPageController mainPageController(){
+    public MainPageController mainPageController() {
         return new MainPageController();
     }
 
@@ -29,25 +45,46 @@ public class WebConfig {
     }
 
     @Bean
-    public RegistrationController registrationController(AuthenticationService authenticationService) {
-        return new RegistrationController(authenticationService);
+    public RegistrationController registrationController(AuthenticationService authenticationService,
+                                                         SessionService sessionService) {
+        return new RegistrationController(authenticationService, sessionService);
     }
 
     @Bean
-    public AuthenticationController authenticationController(AuthenticationService authenticationService){
-        return new AuthenticationController(authenticationService);
+    public AuthenticationController authenticationController(AuthenticationService authenticationService,
+                                                             SessionService sessionService) {
+        return new AuthenticationController(authenticationService, sessionService);
     }
 
     @Bean
     public WeatherController weatherController(WeatherService weatherService,
                                                UserService userService,
-                                               SessionService sessionService){
+                                               SessionService sessionService) {
         return new WeatherController(weatherService, userService, sessionService);
     }
 
     @Bean
-    public GlobalExceptionHandler globalExceptionHandler(){
+    public GlobalExceptionHandler globalExceptionHandler() {
         return new GlobalExceptionHandler();
     }
 
+    @Bean
+    public UserLoginInterceptor userLoginInterceptor() {
+        return new UserLoginInterceptor();
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/css/**", "/js/**", "/images/**")
+                .addResourceLocations("classpath:/static/css", "classpath:/static/js/", "classpath:/static/images/");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(userLoginInterceptor())
+                .addPathPatterns("/register",
+                        "/authenticate",
+                        "/weather",
+                        "/locations");
+    }
 }

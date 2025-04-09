@@ -3,48 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Weather</title>
+    <link href="/static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="header">
-</div>
-<div class="head">
-    <a href="/weather">Home</a>
-    <form action="logout" method="post">
-        <label for="logout">Govno</label>
-        <button id="logout" name="logoutButton" type="submit">Logout</button>
-    </form>
-</div>
-<div class="Search">
-    <form action="locations" method="get">
-        <label>
-            Location:
-            <input name="locationName" type="text" value="test"
-                   th:value="${filter != null ? filter.locationName : 'Location' }"/>
-        </label>
-        <button id="searchButton">Search</button>
-        <label th:if="${locationNameError != null}" th:text="<br/>${locationNameError}"/>
-    </form>
-</div>
-<div class="Cards" id="form-container">
 
-    <div class="Card" th:each="card : ${weatherCards}">
-        <form>
-            <input type="hidden" id="locationId" name="locationId" th:value="${card.locationId}"/>
-            <button id="deleteButton" type="submit">✕</button>
+<header th:insert="components/components.html :: header">
+</header>
+
+<main style="margin-bottom: 100px">
+
+    <div class="container p-5 align-items-center align-content-center" style="display: flex; justify-content: center">
+        <form action="locations" method="get">
+            <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="locationName" class="col-form-label">
+                        Location:
+                    </label>
+                </div>
+                <div class="col-auto">
+                    <input id="locationName"
+                           name="locationName"
+                           type="text"
+                           placeholder="Enter location name"
+                           class="form-control col-auto"
+                           th:value="${filter != null ? filter.locationName : '' }"/>
+                </div>
+                <div class="col-auto">
+                    <button id="searchButton" class="btn btn-primary col-auto">Search</button>
+                </div>
+            </div>
         </form>
-        <img th:src="@{'http://openweathermap.org/img/wn/' + ${card.weatherOpenWeatherDTO.icon} + '@4x.png'}" alt=""
-             class="icon-img"><br/>
-        <pre>
-Location:    [[${card.locationName}]]
-Latitude:    [[${card.weatherOpenWeatherDTO.latitude}]]
-Longitude:   [[${card.weatherOpenWeatherDTO.longitude}]]
-Temperature: [[${card.weatherOpenWeatherDTO.temperature}]]
-Wind speed:  [[${card.weatherOpenWeatherDTO.windSpeed}]]
-Humidity:    [[${card.weatherOpenWeatherDTO.humidity}]]
-        </pre>
     </div>
 
-</div>
+    <div class="Cards card-group" id="form-container">
+        <div class="Card p-2"
+             th:if="${weatherCards != null and weatherCards.size() != 0}"
+             th:each="weatherCard : ${weatherCards}"
+             th:insert="/components/components.html :: weatherCard"></div>
+    </div>
+
+</main>
+
+<footer class="fixed-bottom" th:insert="/components/components.html :: footer">
+</footer>
 
 <script>
     document.getElementById('form-container').addEventListener('submit', function (event) {

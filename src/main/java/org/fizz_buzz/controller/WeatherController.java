@@ -8,6 +8,7 @@ import org.fizz_buzz.dto.LocationOpenWeatherDTO;
 import org.fizz_buzz.dto.LocationRequestDTO;
 import org.fizz_buzz.dto.WeatherViewDTO;
 import org.fizz_buzz.model.Session;
+import org.fizz_buzz.model.User;
 import org.fizz_buzz.service.SessionService;
 import org.fizz_buzz.service.UserService;
 import org.fizz_buzz.service.WeatherService;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +27,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.awt.print.Pageable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @PropertySource("classpath:application.properties")
@@ -49,16 +53,18 @@ public class WeatherController {
     @GetMapping("/weather")
     public String getWeather(Model model,
                              HttpServletRequest request,
-                             HttpServletResponse response) {
+                             @CookieValue(name = "SessionId", required = false) UUID sessionId) {
 
         Session session;
+        User user;
+
         try {
-            session = sessionService.getSession(request);
-        } catch (RuntimeException | NoSuchFieldException e) {
+            session = sessionService.getSession(sessionId);
+            user = session.getUser();
+        } catch (Exception e) {
             return "redirect:authenticate";
         }
 
-        var user = session.getUser();
         var locations = user.getLocations();
 
         List<WeatherViewDTO> weatherDTOs = new ArrayList<>();
@@ -73,20 +79,15 @@ public class WeatherController {
 
         model.addAttribute("weatherCards", weatherDTOs);
 
-        response.addHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
-        response.addHeader("Expires", "Thu, 01 Jan 1970 00:00:00 GMT");
-        response.addHeader("Pragma", "no-cache");
-
         return "weather";
     }
 
     @GetMapping("/locations")
     public String findLocations(@ModelAttribute("locationName") @NotBlank(message = "Location name must not be blank")
-//                                    @Max(value = 30, message = "Location name should be maximum 30 symbols maximum")
                                 String locationName,
                                 Model model) throws IOException, InterruptedException {
 
-        var locations = weatherService.getLocations(locationName);
+        var locations = weatherService.getLocations(locationName.trim().replace(' ', '_'));
 
         model.addAttribute("locationCards", locations);
 

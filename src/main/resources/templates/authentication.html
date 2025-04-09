@@ -3,20 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Login page</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<form action="authenticate" method="post">
-    <label>
-        Login:
-        <input name="login" type="text" th:value="${credentials != null && credentials.login !=null ? credentials.login : ''}"/><br/>
-        <label th:if="${loginError != null}" th:text="${loginError}"></label>
-    </label><br/>
-    <label>
-        Password:
-        <input name="password" type="password" th:value="${credentials != null && credentials.password != null ? credentials.password : ''}"><br/>
-        <label th:if="${passwordError != null}" th:text="${passwordError}"></label>
-    </label><br/>
-    <button>Login</button>
-</form>
+
+<header th:insert="components/components.html :: header">
+</header>
+<main class="container p-5">
+    <div class="align-items-center" style="display: flex; justify-content: center">
+        <form action="authenticate" method="post">
+            <fieldset>
+                <legend>Credentials:</legend>
+                <div class="mb-3">
+                    <label for="login" class="form-label ">Login:</label>
+                    <input id="login" name="login" type="text" class="form-control"
+                           th:value="${credentials != null && credentials.login !=null ? credentials.login : ''}"/>
+                    <!--                    <label th:if="${loginError != null}" th:text="${loginError}"></label>-->
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input id="password" name="password" type="password" class="form-control"
+                           th:value="${credentials != null && credentials.password != null ? credentials.password : ''}">
+                    <!--                    <label th:if="${passwordError != null}" th:text="${passwordError}"></label>-->
+                </div>
+                <button class="btn btn-primary">Login</button>
+            </fieldset>
+        </form>
+    </div>
+</main>
+
+<footer class="fixed-bottom" th:insert="/components/components.html :: footer">
+</footer>
 </body>
 </html>

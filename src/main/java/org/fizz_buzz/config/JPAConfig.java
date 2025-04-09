@@ -3,6 +3,7 @@ package org.fizz_buzz.config;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,6 +17,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(basePackages = "org.fizz_buzz.repository")
 @EnableTransactionManagement
+@Profile("Develop")
 public class JPAConfig {
 
     private static final String MODEL_PACKAGE = "org.fizz_buzz.model";

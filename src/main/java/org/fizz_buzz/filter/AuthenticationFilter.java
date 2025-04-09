@@ -1,54 +1,51 @@
 package org.fizz_buzz.filter;
 
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.fizz_buzz.service.AuthenticationService;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.UUID;
 
-@WebFilter("/*")
+@Component(value = "authenticationFilter")
 public class AuthenticationFilter extends HttpFilter {
 
     private final static String COOKIE_SESSION_ID = "SessionId";
 
     private final String[] ALLOWED_URLS = {
             "/register",
-//            "/weather",
-//            "/test",
+            "/css/",
+            "/js/",
+            "/images/",
             "/authenticate"};
 
+    @Autowired
     private AuthenticationService authenticationService;
 
-    @Override
-    public void init(FilterConfig config) throws ServletException {
-        authenticationService = WebApplicationContextUtils
-                .getRequiredWebApplicationContext(config.getServletContext())
-                .getBean(AuthenticationService.class);
+    public AuthenticationFilter(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
 
-        if (Arrays.asList(ALLOWED_URLS).contains(req.getServletPath())) {
-            chain.doFilter(req, res);
-            return;
+        for (String url : ALLOWED_URLS) {
+            if (req.getServletPath().startsWith(url)) {
+                chain.doFilter(req, res);
+                return;
+            }
         }
 
-        var session = Arrays.stream(req.getCookies())
-                .filter(cookie ->
-                        cookie.getName().equals(COOKIE_SESSION_ID)
-                                && !cookie.getValue().isEmpty())
-                .findAny();
-        if (session.isPresent()) {
-            var sessionId = UUID.fromString(session.get().getValue());
+        var session = WebUtils.getCookie(req, COOKIE_SESSION_ID);
+
+        if (session != null) {
+            var sessionId = UUID.fromString(session.getValue());
 
             if (authenticationService.authenticate(sessionId)) {
                 chain.doFilter(req, res);
