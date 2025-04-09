@@ -45,15 +45,13 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public RegistrationController registrationController(AuthenticationService authenticationService,
-                                                         SessionService sessionService) {
-        return new RegistrationController(authenticationService, sessionService);
+    public RegistrationController registrationController(AuthenticationService authenticationService) {
+        return new RegistrationController(authenticationService);
     }
 
     @Bean
-    public AuthenticationController authenticationController(AuthenticationService authenticationService,
-                                                             SessionService sessionService) {
-        return new AuthenticationController(authenticationService, sessionService);
+    public AuthenticationController authenticationController(AuthenticationService authenticationService) {
+        return new AuthenticationController(authenticationService);
     }
 
     @Bean

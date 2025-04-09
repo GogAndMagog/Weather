@@ -1,10 +1,7 @@
 package org.fizz_buzz.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
-import org.fizz_buzz.dto.LocationOpenWeatherDTO;
 import org.fizz_buzz.dto.LocationRequestDTO;
 import org.fizz_buzz.dto.WeatherViewDTO;
 import org.fizz_buzz.model.Session;
@@ -12,22 +9,21 @@ import org.fizz_buzz.model.User;
 import org.fizz_buzz.service.SessionService;
 import org.fizz_buzz.service.UserService;
 import org.fizz_buzz.service.WeatherService;
+import org.fizz_buzz.util.ApplicationConstant;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.awt.print.Pageable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +32,8 @@ import java.util.UUID;
 @Controller
 @PropertySource("classpath:application.properties")
 public class WeatherController {
+
+    private static final String COOKIE_SESSION_ID = "SessionId";
 
     private final WeatherService weatherService;
     private final UserService userService;
@@ -51,9 +49,8 @@ public class WeatherController {
     }
 
     @GetMapping("/weather")
-    public String getWeather(Model model,
-                             HttpServletRequest request,
-                             @CookieValue(name = "SessionId", required = false) UUID sessionId) {
+    public String getWeather(@CookieValue(name = COOKIE_SESSION_ID, required = false) UUID sessionId,
+                             Model model) {
 
         Session session;
         User user;
@@ -62,7 +59,7 @@ public class WeatherController {
             session = sessionService.getSession(sessionId);
             user = session.getUser();
         } catch (Exception e) {
-            return "redirect:authenticate";
+            return "redirect:%s".formatted(ApplicationConstant.AUTHENTICATION_VIEW);
         }
 
         var locations = user.getLocations();
@@ -79,7 +76,7 @@ public class WeatherController {
 
         model.addAttribute("weatherCards", weatherDTOs);
 
-        return "weather";
+        return ApplicationConstant.WEATHER_VIEW;
     }
 
     @GetMapping("/locations")
@@ -91,7 +88,7 @@ public class WeatherController {
 
         model.addAttribute("locationCards", locations);
 
-        return "locations";
+        return ApplicationConstant.LOCATION_VIEW;
     }
 
     @PostMapping("/locations")
@@ -103,14 +100,13 @@ public class WeatherController {
         try {
             session = sessionService.getSession(request);
         } catch (RuntimeException | NoSuchFieldException e) {
+            //todo: change to throw exception and handle it with global exception handler
             return new RedirectView("registration");
         }
 
-        var locationName = (String) model.getAttribute("locationName");
-
         userService.addLocation(session.getUser(), location.name(), location.latitude(), location.longitude());
 
-        return new RedirectView("weather");
+        return new RedirectView(ApplicationConstant.WEATHER_VIEW);
     }
 
     @DeleteMapping("/locations")
