@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import org.fizz_buzz.dto.UserRegistrationDTO;
 import org.fizz_buzz.exception.ConfirmPasswordException;
 import org.fizz_buzz.service.AuthenticationService;
-import org.fizz_buzz.service.SessionService;
 import org.fizz_buzz.util.ApplicationConstant;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +35,7 @@ public class RegistrationController {
         // needed for correct displaying input-fields of the credentials form
         model.addAttribute("method","GET");
 
-        return ApplicationConstant.REGISTRAION_VIEW;
+        return ApplicationConstant.REGISTRATION_VIEW;
     }
 
     @PostMapping
@@ -50,7 +49,7 @@ public class RegistrationController {
             // for @AssertTrue validation annotation we need this workaround
             model.addAttribute("isPasswordMatches", bindingResult.hasFieldErrors("passwordMatches"));
 
-            return ApplicationConstant.REGISTRAION_VIEW;
+            return ApplicationConstant.REGISTRATION_VIEW;
         } else {
             try {
                 var sessionId = authenticationService.registerUser(params.login(), params.password(), params.confirmPassword());
@@ -59,7 +58,7 @@ public class RegistrationController {
                 return "redirect:%s".formatted(ApplicationConstant.WEATHER_VIEW);
             } catch (ConfirmPasswordException e) {
                 model.addAttribute("confirmPassword", e.getMessage());
-                return ApplicationConstant.REGISTRAION_VIEW;
+                return ApplicationConstant.REGISTRATION_VIEW;
             }
         }
     }

@@ -6,6 +6,6 @@ public class ApplicationConstant {
     public static final String WEATHER_VIEW = "weather";
     public static final String LOCATION_VIEW = "locations";
     public static final String AUTHENTICATION_VIEW = "authentication";
-    public static final String REGISTRAION_VIEW = "registration";
+    public static final String REGISTRATION_VIEW = "registration";
 
 }
