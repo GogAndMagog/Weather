@@ -67,7 +67,12 @@ public class AuthenticationController {
 
     @PostMapping("/logout")
     public String logout(HttpServletResponse response) {
-        response.addCookie(new Cookie(COOKIE_SESSION_ID, ""));
+
+        var nullCookie = new Cookie(COOKIE_SESSION_ID, "");
+        //needed to delete cookie on client
+        nullCookie.setMaxAge(0);
+
+        response.addCookie(nullCookie);
         return "redirect:%s".formatted(ApplicationConstant.AUTHENTICATION_VIEW);
     }
 }
