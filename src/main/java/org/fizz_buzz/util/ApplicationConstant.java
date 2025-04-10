@@ -7,5 +7,6 @@ public class ApplicationConstant {
     public static final String LOCATION_VIEW = "locations";
     public static final String AUTHENTICATION_VIEW = "authentication";
     public static final String REGISTRATION_VIEW = "registration";
+    public static final String ERROR_VIEW = "error";
 
 }

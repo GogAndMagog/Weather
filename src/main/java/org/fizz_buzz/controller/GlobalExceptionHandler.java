@@ -1,16 +1,15 @@
 package org.fizz_buzz.controller;
 
-import org.fizz_buzz.exception.WrongCredentialsException;
-import org.springframework.http.MediaType;
+import org.fizz_buzz.util.ApplicationConstant;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = Exception.class, produces = MediaType.TEXT_HTML_VALUE)
+    @ExceptionHandler(value = Exception.class)
     public String handleAllExceptions(Exception ex) {
-        return "error";
+        return ApplicationConstant.ERROR_VIEW;
     }
 
 }
