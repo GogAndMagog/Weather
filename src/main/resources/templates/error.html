@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Oops</title>
+    <link href="/static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<header th:insert="components/components.html :: header">
+</header>
+
+<main>
+    <div style="display: flex; justify-content: center">
+        <h1>Oops, something went wrong...</h1>
+    </div>
+
+    <div style="display: flex; justify-content: center">
+        <p>Please contact support, to fix the problem</p>
+    </div>
+</main>
+
+<footer class="fixed-bottom" th:insert="/components/components.html :: footer">
+</footer>
+
+</body>
+</html>
