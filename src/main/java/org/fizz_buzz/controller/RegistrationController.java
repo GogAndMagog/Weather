@@ -7,6 +7,7 @@ import org.fizz_buzz.dto.UserRegistrationDTO;
 import org.fizz_buzz.exception.ConfirmPasswordException;
 import org.fizz_buzz.service.AuthenticationService;
 import org.fizz_buzz.util.ApplicationConstant;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,7 +53,12 @@ public class RegistrationController {
             return ApplicationConstant.REGISTRATION_VIEW;
         } else {
             try {
-                var sessionId = authenticationService.registerUser(params.login(), params.password(), params.confirmPassword());
+
+                var salt = BCrypt.gensalt();
+                var hashedPassword = BCrypt.hashpw(params.password(), salt);
+                var hashedConfirmPassword = BCrypt.hashpw(params.password(), salt);
+
+                var sessionId = authenticationService.registerUser(params.login(), hashedPassword, hashedConfirmPassword);
                 response.addCookie(new Cookie(COOKIE_SESSION_ID, sessionId.toString()));
 
                 return "redirect:%s".formatted(ApplicationConstant.WEATHER_VIEW);

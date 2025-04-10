@@ -1,6 +1,7 @@
 package org.fizz_buzz.service;
 
 import org.fizz_buzz.exception.WrongCredentialsException;
+import org.fizz_buzz.exception.UserNotExist;
 import org.fizz_buzz.model.Location;
 import org.fizz_buzz.model.User;
 import org.fizz_buzz.repository.LocationRepository;
@@ -29,6 +30,12 @@ public class UserService {
         return userRepository.save(new User(username, password));
     }
 
+    public User getUser(String username) {
+        return userRepository.findByLogin(username)
+                .orElseThrow(UserNotExist::new);
+    }
+
+    //todo: delete that method, not used
     public User getUser(String username, String password) {
         return userRepository.findByLoginAndPassword(username, password)
                 .orElseThrow(WrongCredentialsException::new);

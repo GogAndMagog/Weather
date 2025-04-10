@@ -4,6 +4,7 @@ import org.fizz_buzz.exception.ConfirmPasswordException;
 import org.fizz_buzz.exception.WrongCredentialsException;
 import org.fizz_buzz.repository.SessionRepository;
 import org.fizz_buzz.repository.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,11 @@ public class AuthenticationService {
 
     public UUID createSession(String login, String password) {
 
-        var user = userService.getUser(login, password);
+        var user = userService.getUser(login);
+
+        if (!BCrypt.checkpw(password, user.getPassword())) {
+            throw new WrongCredentialsException();
+        }
 
         return sessionService.createSession(user).getId();
     }

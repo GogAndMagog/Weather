@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.fizz_buzz.dto.UserDTO;
 import org.fizz_buzz.service.AuthenticationService;
 import org.fizz_buzz.util.ApplicationConstant;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

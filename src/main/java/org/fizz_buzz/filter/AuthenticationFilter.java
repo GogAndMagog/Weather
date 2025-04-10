@@ -44,15 +44,21 @@ public class AuthenticationFilter extends HttpFilter {
 
         var session = WebUtils.getCookie(req, COOKIE_SESSION_ID);
 
-        if (session != null) {
+        if (session != null &&
+            session.getValue() != null &&
+            !session.getValue().isEmpty()) {
+
             var sessionId = UUID.fromString(session.getValue());
 
             if (authenticationService.authenticate(sessionId)) {
+
                 chain.doFilter(req, res);
             } else {
+
                 res.sendRedirect("register");
             }
         } else {
+
             res.sendRedirect("register");
         }
 
