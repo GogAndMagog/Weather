@@ -19,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 @Configuration
 @EnableWebMvc
@@ -59,6 +60,11 @@ public class WebConfig implements WebMvcConfigurer {
                                                UserService userService,
                                                SessionService sessionService) {
         return new WeatherController(weatherService, userService, sessionService);
+    }
+
+    @Bean
+    public ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver(){
+        return new ExceptionHandlerExceptionResolver();
     }
 
     @Bean
