@@ -12,11 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Controller
 public class AuthenticationController {
@@ -30,7 +32,13 @@ public class AuthenticationController {
     }
 
     @GetMapping("/authenticate")
-    public String getView(Model model) {
+    public String getView(@CookieValue(value = COOKIE_SESSION_ID, required = false) UUID sessionId,
+                          Model model) {
+
+        if (sessionId != null && authenticationService.authenticate(sessionId)) {
+            return "redirect:%s".formatted(ApplicationConstant.WEATHER_VIEW);
+        }
+
         return ApplicationConstant.AUTHENTICATION_VIEW;
     }
 

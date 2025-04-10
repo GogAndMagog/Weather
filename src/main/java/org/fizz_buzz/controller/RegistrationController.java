@@ -11,10 +11,13 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/register")
@@ -29,7 +32,12 @@ public class RegistrationController {
     }
 
     @GetMapping
-    public String getRegistrationForm(Model model) {
+    public String getRegistrationForm(@CookieValue(value = COOKIE_SESSION_ID, required = false) UUID sessionId,
+                                      Model model) {
+
+        if (sessionId != null && authenticationService.authenticate(sessionId)) {
+            return "redirect:%s".formatted(ApplicationConstant.WEATHER_VIEW);
+        }
 
         // needed for correct render Thymeleaf template, model attribute must be always exists for th:field
         model.addAttribute("credentials", new UserRegistrationDTO("", "", ""));
