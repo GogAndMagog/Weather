@@ -35,10 +35,6 @@ public class AuthenticationFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
 
-        if (true) {
-            throw new RuntimeException();
-        }
-
         for (String url : ALLOWED_URLS) {
             if (req.getServletPath().startsWith(url)) {
                 chain.doFilter(req, res);

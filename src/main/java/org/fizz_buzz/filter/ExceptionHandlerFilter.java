@@ -5,22 +5,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import java.io.IOException;
 
 @Component(value = "exceptionHandlerFilter")
 public class ExceptionHandlerFilter extends HttpFilter {
-
-    @Autowired
-    private ExceptionHandlerExceptionResolver  exceptionHandlerExceptionResolver;
-
-    public ExceptionHandlerFilter(ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver) {
-
-        this.exceptionHandlerExceptionResolver = exceptionHandlerExceptionResolver;
-    }
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -29,7 +19,9 @@ public class ExceptionHandlerFilter extends HttpFilter {
             chain.doFilter(req, res);
         }
         catch(Exception e){
-            exceptionHandlerExceptionResolver.resolveException(req, res, null, e);
+            req.setAttribute("exception", e);
+            req.getServletContext().getRequestDispatcher("/filterError").forward(req, res);
         }
     }
+
 }

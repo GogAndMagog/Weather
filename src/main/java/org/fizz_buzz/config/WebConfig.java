@@ -1,13 +1,13 @@
 package org.fizz_buzz.config;
 
 import org.fizz_buzz.controller.AuthenticationController;
+import org.fizz_buzz.controller.FilterErrorController;
 import org.fizz_buzz.controller.GlobalExceptionHandler;
 import org.fizz_buzz.controller.MainPageController;
 import org.fizz_buzz.controller.RegistrationController;
 import org.fizz_buzz.controller.TestController;
 import org.fizz_buzz.controller.WeatherController;
 import org.fizz_buzz.interceptor.UserLoginInterceptor;
-import org.fizz_buzz.model.Session;
 import org.fizz_buzz.service.AuthenticationService;
 import org.fizz_buzz.service.SessionService;
 import org.fizz_buzz.service.UserService;
@@ -65,6 +65,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver(){
         return new ExceptionHandlerExceptionResolver();
+    }
+
+    @Bean
+    public FilterErrorController filterErrorController(){
+        return new FilterErrorController();
     }
 
     @Bean
