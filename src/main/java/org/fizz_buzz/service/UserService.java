@@ -35,12 +35,6 @@ public class UserService {
                 .orElseThrow(UserNotExist::new);
     }
 
-    //todo: delete that method, not used
-    public User getUser(String username, String password) {
-        return userRepository.findByLoginAndPassword(username, password)
-                .orElseThrow(WrongCredentialsException::new);
-    }
-
     public List<Location> getUserLocations(String username) {
         return locationRepository.findByUserLogin(username);
     }
@@ -69,7 +63,8 @@ public class UserService {
     @Transactional
     public void deleteLocation(User user, Long locationId) {
 
-        user.removeLocation(locationId);
+        var location = user.removeLocation(locationId);
+//        locationRepository.save(location);
         userRepository.save(user);
     }
 

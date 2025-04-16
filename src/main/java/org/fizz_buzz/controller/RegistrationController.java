@@ -36,7 +36,7 @@ public class RegistrationController {
                                       Model model) {
 
         if (sessionId != null && authenticationService.authenticate(sessionId)) {
-            return "redirect:%s".formatted(ApplicationConstant.WEATHER_VIEW);
+            return "redirect:weather";
         }
 
         // needed for correct render Thymeleaf template, model attribute must be always exists for th:field
@@ -69,7 +69,7 @@ public class RegistrationController {
                 var sessionId = authenticationService.registerUser(params.login(), hashedPassword, hashedConfirmPassword);
                 response.addCookie(new Cookie(COOKIE_SESSION_ID, sessionId.toString()));
 
-                return "redirect:%s".formatted(ApplicationConstant.WEATHER_VIEW);
+                return "redirect:weather";
             } catch (ConfirmPasswordException e) {
                 model.addAttribute("confirmPassword", e.getMessage());
                 return ApplicationConstant.REGISTRATION_VIEW;

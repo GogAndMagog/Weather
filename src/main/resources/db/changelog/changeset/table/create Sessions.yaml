@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - objectQuotingStrategy: "QUOTE_ALL_OBJECTS"
+  - changeSet:
+      id: 0
+      author: admin
+      changes:
+        - createTable:
+            schemaName: Main
+            tableName: Sessions
+            columns:
+              - column:
+                  name: ID
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    unique: true
+                    nullable: false
+              - column:
+                  name: UserId
+                  type: serial
+                  constraints:
+                    nullable: false
+                    referencedTableSchemaName: Main
+                    referencedTableName: Users
+                    referencedColumnNames: ID
+                    foreignKeyName: UserId
+              - column:
+                  name: ExpiresAt
+                  type: timestamp
+      rollback:
+        - dropTable:
+            schemaName: Main
+            tableName: Sessions

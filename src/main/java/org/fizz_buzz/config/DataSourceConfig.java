@@ -33,7 +33,7 @@ public class DataSourceConfig {
         config.setJdbcUrl(dbUrl);
         config.setUsername(username);
         config.setPassword(password);
-        config.setSchema(schema);
+//        config.setSchema(schema);
         return new HikariDataSource(config);
     }
 

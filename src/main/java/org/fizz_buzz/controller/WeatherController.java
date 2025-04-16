@@ -57,9 +57,9 @@ public class WeatherController {
 
         try {
             session = sessionService.getSession(sessionId);
-            user = session.getUser();
+            user = userService.getUser(session.getUser().getLogin());
         } catch (Exception e) {
-            return "redirect:%s".formatted(ApplicationConstant.AUTHENTICATION_VIEW);
+            return "redirect:authenticate";
         }
 
         var locations = user.getLocations();
@@ -97,14 +97,16 @@ public class WeatherController {
                                     HttpServletRequest request) {
 
         Session session;
+        User user;
         try {
             session = sessionService.getSession(request);
+            user = userService.getUser(session.getUser().getLogin());
         } catch (RuntimeException | NoSuchFieldException e) {
             //todo: change to throw exception and handle it with global exception handler
             return new RedirectView("registration");
         }
 
-        userService.addLocation(session.getUser(), location.name(), location.latitude(), location.longitude());
+        userService.addLocation(user, location.name(), location.latitude(), location.longitude());
 
         return new RedirectView(ApplicationConstant.WEATHER_VIEW);
     }
@@ -116,7 +118,8 @@ public class WeatherController {
         Session session;
         try {
             session = sessionService.getSession(request);
-            userService.deleteLocation(session.getUser(), locationId);
+            var user = userService.getUser(session.getUser().getLogin());
+            userService.deleteLocation(user, locationId);
         } catch (RuntimeException | NoSuchFieldException e) {
             return new ResponseEntity<>(HttpStatus.NETWORK_AUTHENTICATION_REQUIRED);
         }

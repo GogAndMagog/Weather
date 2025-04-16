@@ -36,7 +36,7 @@ public class AuthenticationController {
                           Model model) {
 
         if (sessionId != null && authenticationService.authenticate(sessionId)) {
-            return "redirect:%s".formatted(ApplicationConstant.WEATHER_VIEW);
+            return "redirect:weather";
         }
 
         return ApplicationConstant.AUTHENTICATION_VIEW;
@@ -69,7 +69,7 @@ public class AuthenticationController {
             var sessionId = authenticationService.createSession(params.login(), params.password());
             response.addCookie(new Cookie(COOKIE_SESSION_ID, sessionId.toString()));
 
-            return "redirect:%s".formatted(ApplicationConstant.WEATHER_VIEW);
+            return "redirect:weather";
         }
     }
 
@@ -81,6 +81,6 @@ public class AuthenticationController {
         nullCookie.setMaxAge(0);
 
         response.addCookie(nullCookie);
-        return "redirect:%s".formatted(ApplicationConstant.AUTHENTICATION_VIEW);
+        return "redirect:authenticate";
     }
 }

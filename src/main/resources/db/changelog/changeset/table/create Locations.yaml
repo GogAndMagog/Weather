@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - objectQuotingStrategy: "QUOTE_ALL_OBJECTS"
+  - changeSet:
+      id: 0
+      author: admin
+      changes:
+        - createTable:
+            schemaName: Main
+            tableName: Locations
+            columns:
+              - column:
+                  name: ID
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    unique: true
+                    nullable: false
+              - column:
+                  name: Name
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: UserId
+                  type: serial
+                  constraints:
+                    referencedTableSchemaName: Main
+                    referencedTableName: Users
+                    referencedColumnNames: ID
+                    foreignKeyName: UserId
+              - column:
+                  name: Latitude
+                  type: decimal
+                  constraints:
+                    nullable: false
+              - column:
+                  name: Longitude
+                  type: decimal
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            schemaName: Main
+            tableName: Locations

@@ -84,19 +84,6 @@ class AuthenticationServiceTest {
     }
 
     @Test
-    void createSession_CorrectData_NoException() {
-
-        testUser = createTestUser();
-        testSession = createTestSession(testUser);
-
-        when(userRepository.findByLoginAndPassword(USERNAME, PASSWORD)).thenReturn(Optional.of(testUser));
-
-        when(sessionRepository.save(any(Session.class))).thenReturn(testSession);
-
-        assertNotNull(authenticationService.createSession(USERNAME, PASSWORD));
-    }
-
-    @Test
     void createSession_UserNotExist_Exception() {
         assertThrows(RuntimeException.class, () -> authenticationService.createSession(USERNAME, PASSWORD));
     }

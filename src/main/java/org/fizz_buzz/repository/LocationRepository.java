@@ -28,4 +28,6 @@ public interface LocationRepository extends CrudRepository<Location, Long>, Pagi
 
     @EntityGraph(attributePaths = {"user"})
     List<Location> findByUserLogin(String login);
+
+//    void deleteByLocation(Location location);
 }

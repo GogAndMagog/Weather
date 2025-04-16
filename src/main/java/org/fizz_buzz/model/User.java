@@ -9,12 +9,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,12 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "`Users`", schema = "`Main`")
+@NamedEntityGraph(
+        name = "user-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("locations")
+        }
+)
 public class User {
 
     @Id
@@ -40,8 +50,7 @@ public class User {
     @NonNull
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "UserId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "user")
     private List<Location> locations = new ArrayList<>();
 
 
@@ -63,6 +72,20 @@ public class User {
     }
 
     public boolean removeLocation(@NonNull Long locationId) {
+
+//        var location = locations.stream()
+//                                .filter(currentLocation -> Objects.equals(currentLocation.getId(), locationId))
+//                                .findFirst();
+//        if (location.isPresent()) {
+//            location.get().setUser(null);
+//            this.removeLocation(location.get());
+//
+//            return location.get();
+//        }
+//        else{
+//            return null;
+//        }
+
         return locations.removeIf(location -> Objects.equals(location.getId(), locationId));
     }
 }

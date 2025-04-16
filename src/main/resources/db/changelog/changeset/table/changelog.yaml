@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - include:
+      relativeToChangelogFile: true
+      file: create Users.yaml
+
+  - include:
+      relativeToChangelogFile: true
+      file: create Sessions.yaml
+
+  - include:
+      relativeToChangelogFile: true
+      file: create Locations.yaml

@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - objectQuotingStrategy: "QUOTE_ALL_OBJECTS"
+  - changeSet:
+      id: 0
+      author: admin
+      changes:
+        - createTable:
+            schemaName: Main
+            tableName: Users
+            columns:
+              - column:
+                  name: ID
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+              - column:
+                  name: Login
+                  type: varchar(15)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: Password
+                  type: text
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            schemaName: Main
+            tableName: Users

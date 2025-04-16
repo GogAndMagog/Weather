@@ -1,14 +1,22 @@
 databaseChangeLog:
-  - objectQuotingStrategy: QUOTE_ALL_OBJECTS
   - include:
       relativeToChangelogFile: true
-      file: changeset\V1.0\create-users-table.yaml
+      file: changeset\schema\changelog.yaml
+
   - include:
       relativeToChangelogFile: true
-      file: changeset\V1.0\create-sessions-table.yaml
-  - include:
-      relativeToChangelogFile: true
-      file: changeset\V1.0\create-locations-table.yaml
+      file: changeset\table\changelog.yaml
+
+#  - include:
+#      relativeToChangelogFile: true
+#      file: changeset\V1.0\create-users-table.yaml
+#  - include:
+#      relativeToChangelogFile: true
+#      file: changeset\V1.0\create-sessions-table.yaml
+#  - include:
+#      relativeToChangelogFile: true
+#      file: changeset\V1.0\create-locations-table.yaml
+
 #        - createTable:
 #            schemaName: Main
 #            tableName: Users

@@ -44,14 +44,6 @@ class UserServiceTest {
     }
 
     @Test
-    void getUser_NoException() {
-
-        createUser(TEST_LOGIN, TEST_PASSWORD);
-
-        assertNotNull(userService.getUser(TEST_LOGIN, TEST_PASSWORD));
-    }
-
-    @Test
     void addLocation_NoException() {
 
         var user = createUser(TEST_LOGIN, TEST_PASSWORD);
