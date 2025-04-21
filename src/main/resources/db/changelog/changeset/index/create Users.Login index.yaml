@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: admin
+      changes:
+        - createIndex:
+            schemaName: Main
+            tableName: Users
+            indexName: UsersLogin
+            columns:
+              - column:
+                  name: Login
+                  constraints:
+                    unique: true

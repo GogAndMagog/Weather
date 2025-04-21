@@ -7,6 +7,9 @@ databaseChangeLog:
       relativeToChangelogFile: true
       file: changeset\table\changelog.yaml
 
+  - include:
+      relativeToChangelogFile: true
+      file: changeset\index\changelog.yaml
 #  - include:
 #      relativeToChangelogFile: true
 #      file: changeset\V1.0\create-users-table.yaml
