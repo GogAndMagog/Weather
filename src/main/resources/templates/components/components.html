@@ -34,7 +34,7 @@
         <img src="/static/images/sunIcon.png"
              th:src="@{'http://openweathermap.org/img/wn/' + ${weatherCard.weatherOpenWeatherDTO.icon} + '@4x.png'}"
              alt=""
-             class="card-img-top p-2"><br/>
+             class="card-img-top p-2" style="background-color: white"><br/>
         <pre class="card-text p-2" style="font-family: 'Times New Roman',serif;">
 Latitude:    [[${weatherCard.weatherOpenWeatherDTO.latitude}]]
 Longitude:   [[${weatherCard.weatherOpenWeatherDTO.longitude}]]
