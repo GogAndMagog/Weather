@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -26,7 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExc
 @Configuration
 @EnableWebMvc
 @ComponentScan(
-        basePackages = {"org.fizz_buzz.filter"},
+        basePackages = {"org.fizz_buzz.filter", "org.fizz_buzz.util"},
         basePackageClasses = {DataLayerConfig.class,
                 DataLayerTestConfig.class,
                 DataSourceConfig.class,
@@ -37,6 +38,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExc
         })
 
 @EnableSpringDataWebSupport
+@EnableScheduling
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
