@@ -2,16 +2,21 @@ package org.fizz_buzz.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
+import org.fizz_buzz.dto.LocationOpenWeatherDTO;
 import org.fizz_buzz.dto.LocationRequestDTO;
 import org.fizz_buzz.dto.WeatherViewDTO;
+import org.fizz_buzz.model.Location;
 import org.fizz_buzz.model.Session;
 import org.fizz_buzz.model.User;
+import org.fizz_buzz.repository.LocationRepository;
 import org.fizz_buzz.service.SessionService;
 import org.fizz_buzz.service.UserService;
 import org.fizz_buzz.service.WeatherService;
 import org.fizz_buzz.util.ApplicationConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,19 +43,23 @@ public class WeatherController {
     private final WeatherService weatherService;
     private final UserService userService;
     private final SessionService sessionService;
+    private final LocationRepository locationRepository;
 
 
     public WeatherController(WeatherService weatherService,
                              UserService userService,
-                             SessionService sessionService) {
+                             SessionService sessionService,
+                             LocationRepository locationRepository) {
         this.weatherService = weatherService;
         this.userService = userService;
         this.sessionService = sessionService;
+        this.locationRepository = locationRepository;
     }
 
     @GetMapping("/weather")
     public String getWeather(@CookieValue(name = COOKIE_SESSION_ID, required = false) UUID sessionId,
-                             Model model) {
+                             Model model,
+                             @PageableDefault(size = 5) Pageable pageable) {
 
         Session session;
         User user;
@@ -62,7 +71,7 @@ public class WeatherController {
             return "redirect:authenticate";
         }
 
-        var locations = user.getLocations();
+        var locations = locationRepository.findByUser(user, pageable);
 
         List<WeatherViewDTO> weatherDTOs = new ArrayList<>();
 
@@ -75,6 +84,8 @@ public class WeatherController {
         });
 
         model.addAttribute("weatherCards", weatherDTOs);
+        model.addAttribute("totalPages", locations.getTotalPages());
+        model.addAttribute("currentPage", locations.getNumber());
 
         return ApplicationConstant.WEATHER_VIEW;
     }

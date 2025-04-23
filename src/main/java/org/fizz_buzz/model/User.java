@@ -18,6 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class User {
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "user")
+    @BatchSize(size = 1)
     private List<Location> locations = new ArrayList<>();
 
 

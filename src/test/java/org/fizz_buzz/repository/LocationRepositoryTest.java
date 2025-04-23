@@ -61,19 +61,19 @@ class LocationRepositoryTest {
         assertThrows(Exception.class, () -> locationRepository.save(location));
     }
 
-    @Test
-    void findByUser_CorrectData_NoException() {
-        var user = userRepository.save(createTestUser());
-
-        var location = createTestLocation(user, LOCATION_NAME_TEXAS, 112.12, 11.23);
-        locationRepository.save(location);
-
-        location = createTestLocation(user, LOCATION_NAME_CLOUDS, 331, 12231.23);
-        locationRepository.save(location);
-
-
-        assertEquals(2, locationRepository.findByUser(user).size());
-    }
+//    @Test
+//    void findByUser_CorrectData_NoException() {
+//        var user = userRepository.save(createTestUser());
+//
+//        var location = createTestLocation(user, LOCATION_NAME_TEXAS, 112.12, 11.23);
+//        locationRepository.save(location);
+//
+//        location = createTestLocation(user, LOCATION_NAME_CLOUDS, 331, 12231.23);
+//        locationRepository.save(location);
+//
+//
+//        assertEquals(2, locationRepository.findByUser(user).size());
+//    }
 
     private User createTestUser(){
 

@@ -12,22 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LocationRepository extends CrudRepository<Location, Long>, PagingAndSortingRepository<Location, Long> {
-    @Override
-    @EntityGraph(attributePaths = {"user"})
-    Iterable<Location> findAll();
 
-    @Override
-    @EntityGraph(attributePaths = {"user"})
-    Page<Location> findAll(Pageable pageable);
+//    @Override
+//    @EntityGraph(attributePaths = {"user"})
+//    Iterable<Location> findAll();
 
-    List<Location> findByUser(User user);
-    Optional<Location> findByNameAndUserAndLongitudeAndLatitude(String name,
-                                                                User user,
-                                                                Double longitude,
-                                                                Double latitude);
+    Page<Location> findByUser(User user, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"})
     List<Location> findByUserLogin(String login);
-
-//    void deleteByLocation(Location location);
 }

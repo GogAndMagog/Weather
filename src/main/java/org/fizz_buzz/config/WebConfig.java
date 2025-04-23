@@ -8,6 +8,7 @@ import org.fizz_buzz.controller.RegistrationController;
 import org.fizz_buzz.controller.TestController;
 import org.fizz_buzz.controller.WeatherController;
 import org.fizz_buzz.interceptor.UserLoginInterceptor;
+import org.fizz_buzz.repository.LocationRepository;
 import org.fizz_buzz.service.AuthenticationService;
 import org.fizz_buzz.service.SessionService;
 import org.fizz_buzz.service.UserService;
@@ -15,6 +16,7 @@ import org.fizz_buzz.service.WeatherService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -33,6 +35,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExc
                 ServiceConfig.class,
                 ThymeleafConfig.class
         })
+
+@EnableSpringDataWebSupport
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
@@ -58,8 +62,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public WeatherController weatherController(WeatherService weatherService,
                                                UserService userService,
-                                               SessionService sessionService) {
-        return new WeatherController(weatherService, userService, sessionService);
+                                               SessionService sessionService,
+                                               LocationRepository locationRepository) {
+        return new WeatherController(weatherService, userService, sessionService, locationRepository);
     }
 
     @Bean
