@@ -18,7 +18,7 @@ public class Util {
         this.sessionRepository = sessionRepository;
     }
 
-    @Scheduled(cron = "0 1/2 0 * * ?")
+    @Scheduled(cron = "@daily")
     @Transactional
     public void deleteOldSessions(){
 
