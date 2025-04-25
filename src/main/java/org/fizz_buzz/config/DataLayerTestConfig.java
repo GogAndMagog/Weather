@@ -1,9 +1,6 @@
 package org.fizz_buzz.config;
 
 import jakarta.persistence.EntityManagerFactory;
-import org.fizz_buzz.repository.LocationRepository;
-import org.fizz_buzz.repository.UserRepository;
-import org.fizz_buzz.test.TransactionalTestBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -57,8 +54,4 @@ public class DataLayerTestConfig {
         return new JpaTransactionManager(emf);
     }
 
-    @Bean
-    public TransactionalTestBean transactionalTestBean(UserRepository userRepository, LocationRepository locationRepository){
-        return new TransactionalTestBean(userRepository, locationRepository);
-    }
 }

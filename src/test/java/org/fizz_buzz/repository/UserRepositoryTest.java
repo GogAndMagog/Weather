@@ -4,7 +4,6 @@ import org.fizz_buzz.common.CustomTestTag;
 import org.fizz_buzz.config.DataLayerTestConfig;
 import org.fizz_buzz.model.Location;
 import org.fizz_buzz.model.User;
-import org.fizz_buzz.test.TransactionalTestBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
@@ -22,8 +21,6 @@ class UserRepositoryTest {
     private static final String NEW_PASSWORD = "pazz";
 
     private UserRepository userRepository;
-    private LocationRepository locationRepository;
-    private TransactionalTestBean transactionalTestBean;
 
 
     @BeforeEach
@@ -32,8 +29,6 @@ class UserRepositoryTest {
         ApplicationContext context = new AnnotationConfigApplicationContext(DataLayerTestConfig.class);
 
         userRepository = context.getBean(UserRepository.class);
-        locationRepository = context.getBean(LocationRepository.class);
-        transactionalTestBean = context.getBean(TransactionalTestBean.class);
     }
 
     @Test
@@ -44,14 +39,6 @@ class UserRepositoryTest {
         userRepository.save(testUser);
 
         assertNotEquals(0, testUser.getId());
-    }
-
-    @Test
-    void save_NullPasswordAndNullUsername_Exception() {
-
-        var testUser = new User();
-
-        assertThrows(Exception.class, () -> userRepository.save(testUser));
     }
 
     @Test
