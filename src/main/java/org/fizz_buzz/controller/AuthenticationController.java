@@ -4,6 +4,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.fizz_buzz.dto.UserDTO;
+import org.fizz_buzz.dto.UserRegistrationDTO;
+import org.fizz_buzz.exception.UserNotExist;
+import org.fizz_buzz.exception.WrongCredentialsException;
 import org.fizz_buzz.service.AuthenticationService;
 import org.fizz_buzz.util.ApplicationConstant;
 import org.mindrot.jbcrypt.BCrypt;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +43,9 @@ public class AuthenticationController {
             return "redirect:weather";
         }
 
+        model.addAttribute("credentials", new UserDTO("", ""));
+        model.addAttribute("method","GET");
+
         return ApplicationConstant.AUTHENTICATION_VIEW;
     }
 
@@ -66,8 +73,16 @@ public class AuthenticationController {
 
             return ApplicationConstant.AUTHENTICATION_VIEW;
         } else {
-            var sessionId = authenticationService.createSession(params.login(), params.password());
-            response.addCookie(new Cookie(COOKIE_SESSION_ID, sessionId.toString()));
+
+            try {
+                var sessionId = authenticationService.createSession(params.login(), params.password());
+                response.addCookie(new Cookie(COOKIE_SESSION_ID, sessionId.toString()));
+            } catch (WrongCredentialsException | UserNotExist e) {
+                model.addAttribute("globalErrors", e.getMessage());
+                model.addAttribute("method", "GET");
+
+                return ApplicationConstant.AUTHENTICATION_VIEW;
+            }
 
             return "redirect:weather";
         }

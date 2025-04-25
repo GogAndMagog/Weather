@@ -15,10 +15,12 @@
             Weather
         </a>
     </div>
-    <form th:if="${login != null}" class="form-check-inline my-2 my-lg-0" action="logout" method="POST">
-        <label th:text="${login}">Govno</label>
-        <button class="btn btn-outline-success" type="submit">Logout</button>
-    </form>
+    <div th:if="${login != null}">
+        <span th:text="${login}">Govno</span>
+        <form class="form-check-inline my-2 my-lg-0" action="logout" method="POST">
+            <button class="btn btn-outline-success" type="submit">Logout</button>
+        </form>
+    </div>
 </nav>
 
 <div th:fragment="footer" class="text-center bg-light p-4">
