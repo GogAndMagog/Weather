@@ -17,63 +17,67 @@
 
 <main class="container p-5">
     <div class="align-items-center" style="display: flex; justify-content: center">
-        <form th:object="${credentials}"
-              action="authenticate"
-              method="post"
-              accept-charset="UTF-8"
-              enctype="application/x-www-form-urlencoded">
-            <fieldset>
-                <legend>Credentials:</legend>
-                <div class="mb-3">
-                    <label for="login"
-                           th:for="${#ids.next('login')}"
-                           class="form-label ">Login:</label>
-                    <input id="login"
-                           name="login"
-                           type="text"
-                           class="form-control"
-                           th:classappend="(${#fields.hasErrors('login')} ? 'is-invalid')
+        <div class="text-start ">
+            <form th:object="${credentials}"
+                  action="authenticate"
+                  method="post"
+                  accept-charset="UTF-8"
+                  enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <legend>Credentials:</legend>
+                    <div class="mb-3">
+                        <label for="login"
+                               th:for="${#ids.next('login')}"
+                               class="form-label ">Login:</label>
+                        <input id="login"
+                               name="login"
+                               type="text"
+                               class="form-control"
+                               th:classappend="(${#fields.hasErrors('login')} ? 'is-invalid')
                                + ' '
                                + (${method != 'GET' and not #fields.hasErrors('login')} ? 'is-valid')"
-                           th:field="*{login}" placeholder="Enter your name..."/>
-                    <div th:if="${#fields.hasErrors('login')}" class="invalid-feedback">
-                        <ul>
-                            <li th:each="err : ${#fields.errors('login')}" th:text="${err}"/>
-                        </ul>
+                               th:field="*{login}" placeholder="Enter your name..."/>
+                        <div th:if="${#fields.hasErrors('login')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('login')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                        <div th:if="${not #fields.hasErrors('login')}" class="valid-feedback">
+                            <ul>
+                                <li>all good</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div th:if="${not #fields.hasErrors('login')}" class="valid-feedback">
-                        <ul>
-                            <li>all good</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="password"
-                           th:for="${#ids.next('password')}"
-                           class="form-label">Password:</label>
-                    <input id="password"
-                           name="password"
-                           type="password"
-                           class="form-control"
-                           th:classappend="(${#fields.hasErrors('password')} ? 'is-invalid')
+                    <div class="mb-3">
+                        <label for="password"
+                               th:for="${#ids.next('password')}"
+                               class="form-label">Password:</label>
+                        <input id="password"
+                               name="password"
+                               type="password"
+                               class="form-control"
+                               th:classappend="(${#fields.hasErrors('password')} ? 'is-invalid')
                                + ' '
                                + (${method != 'GET' and not #fields.hasErrors('password')} ? 'is-valid')"
-                           th:field="*{password}"/>
-                    <div class="invalid-feedback">
-                        <ul>
-                            <li th:each="err : ${#fields.errors('password')}" th:text="${err}"/>
-                        </ul>
+                               th:field="*{password}"/>
+                        <div class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('password')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                        <div th:if="${not #fields.hasErrors('password')}" class="valid-feedback">
+                            <ul>
+                                <li>all good</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div th:if="${not #fields.hasErrors('password')}" class="valid-feedback">
-                        <ul>
-                            <li>all good</li>
-                        </ul>
-                    </div>
-                </div>
-                <button class="btn btn-primary">Login</button>
-            </fieldset>
-        </form>
 
+                    <button class="btn btn-primary mt-2">Login</button>
+                </fieldset>
+            </form>
+
+            <a class="mt-2" th:href="register">Sign up</a><br/>
+        </div>
     </div>
 
     <div th:if="${globalErrors != null}"
@@ -93,7 +97,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Получаем кнопку закрытия
-    document.querySelector('.alert .btn-close').addEventListener('click', function() {
+    document.querySelector('.alert .btn-close').addEventListener('click', function () {
         // Находим родительский алёрт
         var alert = this.closest('.alert');
         // Удаляем алёрт из DOM
