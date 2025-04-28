@@ -37,14 +37,10 @@ public class AuthenticationService {
         this.sessionService = sessionService;
     }
 
-    public UUID registerUser(String login, String password, String confirmPassword) {
-
-        if (!password.equals(confirmPassword)) {
-            throw new ConfirmPasswordException();
-        }
-
+    public UUID registerUser(String login, String password) {
 
         User user = null;
+
         try {
             user = userService.createUser(login, password);
         } catch (Exception e) {

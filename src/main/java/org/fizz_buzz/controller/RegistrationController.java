@@ -65,9 +65,8 @@ public class RegistrationController {
 
                 var salt = BCrypt.gensalt();
                 var hashedPassword = BCrypt.hashpw(params.password(), salt);
-                var hashedConfirmPassword = BCrypt.hashpw(params.password(), salt);
 
-                var sessionId = authenticationService.registerUser(params.login(), hashedPassword, hashedConfirmPassword);
+                var sessionId = authenticationService.registerUser(params.login(), hashedPassword);
                 response.addCookie(new Cookie(COOKIE_SESSION_ID, sessionId.toString()));
 
                 return "redirect:weather";
