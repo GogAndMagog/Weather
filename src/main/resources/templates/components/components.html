@@ -40,10 +40,10 @@
         <pre class="card-text p-2" style="font-family: 'Times New Roman',serif;">
 Latitude:    [[${weatherCard.weatherOpenWeatherDTO.latitude}]]
 Longitude:   [[${weatherCard.weatherOpenWeatherDTO.longitude}]]
-Temperature: [[${weatherCard.weatherOpenWeatherDTO.temperature}]]
-Wind speed:  [[${weatherCard.weatherOpenWeatherDTO.windSpeed}]]
+Temperature: [[${weatherCard.weatherOpenWeatherDTO.temperature}]] °C
+Wind speed:  [[${weatherCard.weatherOpenWeatherDTO.windSpeed}]] m/s
 Humidity:    [[${weatherCard.weatherOpenWeatherDTO.humidity}]]
-    </pre>
+        </pre>
     </div>
     <div class="card-footer ">
         <form class=" text-end p-2">
@@ -59,13 +59,15 @@ Humidity:    [[${weatherCard.weatherOpenWeatherDTO.humidity}]]
     <div class="card-header text-center h1" style="font-family: 'Times New Roman',serif;"
          th:text="${locationCard.name}">Location name
     </div>
-    <pre>
+
+    <div class="card-body">
+        <pre class="card-text p-2" style="font-family: 'Times New Roman',serif;">
 Latitude:  [[${locationCard.latitude}]]
 Longitude: [[${locationCard.longitude}]]
 Country:   [[${locationCard.country}]]
 State:     [[${locationCard.state}]]
         </pre>
-
+    </div>
     <div class="card-footer ">
         <form class="text-end p-2" action="locations" method="post">
             <input type="hidden" name="name" th:value="${name}">
