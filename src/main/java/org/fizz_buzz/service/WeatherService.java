@@ -42,19 +42,6 @@ public class WeatherService {
         this.httpClient = httpClient;
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-
-        var weatherService = new WeatherService(HttpClient.newHttpClient());
-        var weatherLocationNameDTO = weatherService.getWeather("Ульяновск");
-        System.out.println(weatherLocationNameDTO);
-
-        var weatherCoordinatesDTO = weatherService.getWeather(35.464, 57.1275);
-        System.out.println(weatherCoordinatesDTO);
-
-        var locationDTOs = weatherService.getLocations("Москва");
-        System.out.println(locationDTOs);
-    }
-
     public WeatherOpenWeatherDTO getWeather(String locationName) throws IOException, InterruptedException {
 
         var uriString = new StringBuilder().append(HTTPS)

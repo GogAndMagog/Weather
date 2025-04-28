@@ -17,7 +17,6 @@ import java.util.UUID;
 public class UserLoginInterceptor implements HandlerInterceptor {
 
     private SessionService sessionService;
-    private UserService userService;
 
     public UserLoginInterceptor() {
     }
@@ -25,11 +24,6 @@ public class UserLoginInterceptor implements HandlerInterceptor {
     @Autowired
     public void setSessionService(SessionService sessionService) {
         this.sessionService = sessionService;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     @Override

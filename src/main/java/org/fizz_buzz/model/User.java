@@ -7,19 +7,15 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.BatchSize;
-import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +53,13 @@ public class User {
 
 
     public void addLocation(@NonNull Location location) {
+
         location.setUser(this);
         locations.add(location);
     }
 
     public boolean removeLocation(@NonNull String locationName) {
+
         return locations.stream()
                 .filter(location -> location.getName().equals(locationName))
                 .findFirst()
@@ -74,19 +72,6 @@ public class User {
     }
 
     public boolean removeLocation(@NonNull Long locationId) {
-
-//        var location = locations.stream()
-//                                .filter(currentLocation -> Objects.equals(currentLocation.getId(), locationId))
-//                                .findFirst();
-//        if (location.isPresent()) {
-//            location.get().setUser(null);
-//            this.removeLocation(location.get());
-//
-//            return location.get();
-//        }
-//        else{
-//            return null;
-//        }
 
         return locations.removeIf(location -> Objects.equals(location.getId(), locationId));
     }

@@ -12,9 +12,8 @@ import javax.sql.DataSource;
 public class LiquibaseConfig {
     @Bean
     public SpringLiquibase liquibase(DataSource dataSource) {
+
         SpringLiquibase liquibase = new SpringLiquibase();
-//        liquibase.setLiquibaseSchema("Main");
-//        liquibase.setDefaultSchema("Main");
 
         liquibase.setChangeLog("classpath:db/changelog/db.changelog-master.yaml");
         liquibase.setDataSource(dataSource);

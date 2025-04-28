@@ -10,6 +10,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public String handleAllExceptions(Exception ex, HttpServletResponse response) {
+
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return ApplicationConstant.ERROR_VIEW;
     }

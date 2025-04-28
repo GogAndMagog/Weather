@@ -1,6 +1,5 @@
 package org.fizz_buzz.service;
 
-import org.fizz_buzz.exception.WrongCredentialsException;
 import org.fizz_buzz.exception.UserNotExist;
 import org.fizz_buzz.model.Location;
 import org.fizz_buzz.model.User;
@@ -63,8 +62,7 @@ public class UserService {
     @Transactional
     public void deleteLocation(User user, Long locationId) {
 
-        var location = user.removeLocation(locationId);
-//        locationRepository.save(location);
+        user.removeLocation(locationId);
         userRepository.save(user);
     }
 

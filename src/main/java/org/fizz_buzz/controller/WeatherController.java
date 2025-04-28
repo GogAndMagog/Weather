@@ -2,10 +2,8 @@ package org.fizz_buzz.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
-import org.fizz_buzz.dto.LocationOpenWeatherDTO;
 import org.fizz_buzz.dto.LocationRequestDTO;
 import org.fizz_buzz.dto.WeatherViewDTO;
-import org.fizz_buzz.model.Location;
 import org.fizz_buzz.model.Session;
 import org.fizz_buzz.model.User;
 import org.fizz_buzz.repository.LocationRepository;
@@ -13,7 +11,6 @@ import org.fizz_buzz.service.SessionService;
 import org.fizz_buzz.service.UserService;
 import org.fizz_buzz.service.WeatherService;
 import org.fizz_buzz.util.ApplicationConstant;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

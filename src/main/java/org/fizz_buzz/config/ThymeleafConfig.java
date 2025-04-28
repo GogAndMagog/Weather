@@ -17,15 +17,16 @@ public class ThymeleafConfig {
     @Bean
     @Description("Thymeleaf Template Engine")
     public SpringTemplateEngine templateEngine(ApplicationContext applicationContext) {
+
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver(applicationContext));
-//        templateEngine.setTemplateEngineMessageSource(messageSource());
         return templateEngine;
     }
 
     @Bean
     @Description("Thymeleaf Template Resolver")
     public SpringResourceTemplateResolver templateResolver(ApplicationContext applicationContext) {
+
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setPrefix("classpath:/templates/");
@@ -35,7 +36,6 @@ public class ThymeleafConfig {
         templateResolver.setCacheTTLMs(0L);
         templateResolver.setCacheable(false);
         templateResolver.setApplicationContext(applicationContext);
-//        templateResolver.getCacheablePatterns().clear();
 
         return templateResolver;
     }
@@ -43,6 +43,7 @@ public class ThymeleafConfig {
     @Bean
     @Description("Thymeleaf View Resolver")
     public ThymeleafViewResolver viewResolver(@Autowired ApplicationContext applicationContext) {
+
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine(applicationContext));
         viewResolver.setOrder(1);

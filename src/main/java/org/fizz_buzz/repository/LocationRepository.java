@@ -9,13 +9,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface LocationRepository extends CrudRepository<Location, Long>, PagingAndSortingRepository<Location, Long> {
-
-//    @Override
-//    @EntityGraph(attributePaths = {"user"})
-//    Iterable<Location> findAll();
 
     Page<Location> findByUser(User user, Pageable pageable);
 

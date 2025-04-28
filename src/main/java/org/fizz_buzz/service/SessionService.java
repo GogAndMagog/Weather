@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import java.net.http.HttpRequest;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
@@ -40,7 +39,6 @@ public class SessionService {
         session.setUser(user);
         session.setExpiresAt(new Date(System.currentTimeMillis() + sessionDurationTime));
         return sessionRepository.save(session);
-//        return sessionRepository.save(new Session(user, new Date(System.currentTimeMillis() + sessionDurationTime)));
     }
 
     public boolean authenticate(UUID id) {

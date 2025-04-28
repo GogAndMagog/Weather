@@ -22,7 +22,5 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         FilterRegistration.Dynamic authFilter = servletContext.addFilter("authenticationFilter",
                 new DelegatingFilterProxy("authenticationFilter"));
         authFilter.addMappingForUrlPatterns(null, false, "/*");
-
-
     }
 }
