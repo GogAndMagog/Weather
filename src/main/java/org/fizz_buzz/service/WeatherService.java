@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fizz_buzz.dto.LocationOpenWeatherDTO;
 import org.fizz_buzz.dto.WeatherOpenWeatherDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
@@ -23,7 +24,8 @@ public class WeatherService {
     private static final String GET_DATA = "data/2.5/weather";
     private static final String GET_CITIES = "geo/1.0/direct";
 
-    private static final String API_KEY = "5d984879f28d14c79958006dc1934093";
+    @Value("${WEATHER_API_KEY}")
+    private String API_KEY;
     private static final String LAT = "&lat=%s";
     private static final String LON = "&lon=%s";
     private static final String CITY_NAME = "&q=%s";
