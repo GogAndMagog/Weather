@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.fizz_buzz.dto.UserRegistrationDTO;
 import org.fizz_buzz.exception.ConfirmPasswordException;
+import org.fizz_buzz.exception.UserAlreadyExists;
 import org.fizz_buzz.service.AuthenticationService;
 import org.fizz_buzz.util.ApplicationConstant;
 import org.mindrot.jbcrypt.BCrypt;
@@ -72,6 +73,12 @@ public class RegistrationController {
                 return "redirect:weather";
             } catch (ConfirmPasswordException e) {
                 model.addAttribute("confirmPassword", e.getMessage());
+                return ApplicationConstant.REGISTRATION_VIEW;
+            }
+            catch (UserAlreadyExists e) {
+                model.addAttribute("globalErrors", e.getMessage());
+                model.addAttribute("method", "GET");
+
                 return ApplicationConstant.REGISTRATION_VIEW;
             }
         }

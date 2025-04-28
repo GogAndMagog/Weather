@@ -1,7 +1,9 @@
 package org.fizz_buzz.service;
 
 import org.fizz_buzz.exception.ConfirmPasswordException;
+import org.fizz_buzz.exception.UserAlreadyExists;
 import org.fizz_buzz.exception.WrongCredentialsException;
+import org.fizz_buzz.model.User;
 import org.fizz_buzz.repository.SessionRepository;
 import org.fizz_buzz.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
@@ -41,7 +43,13 @@ public class AuthenticationService {
             throw new ConfirmPasswordException();
         }
 
-        var user = userService.createUser(login, password);
+
+        User user = null;
+        try {
+            user = userService.createUser(login, password);
+        } catch (Exception e) {
+            throw new UserAlreadyExists(login);
+        }
 
         return sessionService.createSession(user).getId();
     }
